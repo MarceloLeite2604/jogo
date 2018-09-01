@@ -18,6 +18,14 @@ public class Produto implements Serializable {
 	@NotNull
 	private String nome;
 
+	public long getId() {
+		return id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
 	private Produto(Builder builder) {
 		this.id = GERADOR_ID.gerar();
 		this.nome = builder.nome;
