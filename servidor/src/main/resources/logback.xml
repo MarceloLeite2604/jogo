@@ -1,0 +1,35 @@
+<configuration>
+
+	<property 
+		name="defaultPatternLayout"
+		value="[%-5p] %d{HH:mm:ss.SSS} [%-8t] %c{5}: %m%n" />
+		
+	<property 
+		name="encoder"
+		value="ch.qos.logback.classic.encoder.PatternLayoutEncoder" />
+		
+	<property 
+		name="simulatorLogLevel" 
+		value="debug" />
+		
+	<property 
+		name="strategiesLogLevel" 
+		value="info" />
+
+	<appender 
+		name="stdout"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="${encoder}">
+			<Pattern>${defaultPatternLayout}</Pattern>
+		</encoder>
+	</appender>
+
+	<root level="info">
+		<appender-ref ref="stdout" />
+	</root>
+
+	<logger 
+		name="org.marceloleite.jogo.servidor" 
+		level="debug" />
+
+</configuration>
