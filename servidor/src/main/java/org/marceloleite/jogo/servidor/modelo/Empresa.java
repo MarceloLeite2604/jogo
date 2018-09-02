@@ -1,6 +1,5 @@
 package org.marceloleite.jogo.servidor.modelo;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
@@ -10,7 +9,11 @@ import java.util.UUID;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-public class Empresa implements Serializable {
+import org.marceloleite.jogo.servidor.serializer.IdSerializer;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+public class Empresa implements Entidade<UUID> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -40,6 +43,7 @@ public class Empresa implements Serializable {
 	private BigDecimal caixa;
 
 	@NotNull
+	@JsonSerialize(keyUsing = IdSerializer.class) 
 	private Map<Produto, Long> estoque;
 
 	@NotNull
@@ -48,6 +52,7 @@ public class Empresa implements Serializable {
 	@NotNull
 	private List<Intencao> demandas;
 
+	@Override
 	public UUID getId() {
 		return id;
 	}

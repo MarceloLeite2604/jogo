@@ -1,20 +1,21 @@
 package org.marceloleite.jogo.servidor.modelo;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-public class Intencao implements Serializable {
+import org.marceloleite.jogo.servidor.validacao.grupo.GrupoValidacaoBanco;
+
+public class Intencao implements Entidade<Long> {
 
 	private static final long serialVersionUID = 1L;
 
 	private static final GeradorID<Long> GERADOR_ID = new GeradorIDSequencial();
 
-	@NotNull
+	@NotNull(groups = { GrupoValidacaoBanco.class })
 	@Min(1)
-	private long id;
+	private Long id;
 
 	@NotNull
 	private TipoIntencao tipo;
@@ -33,6 +34,34 @@ public class Intencao implements Serializable {
 	@NotNull
 	@Min(0)
 	private int quantidadeAtual;
+
+	private Intencao() {
+		// Construtor padrão para deserialização de objetos.
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public TipoIntencao getTipo() {
+		return tipo;
+	}
+
+	public Produto getProduto() {
+		return produto;
+	}
+
+	public BigDecimal getPrecoUnitarioOriginal() {
+		return precoUnitarioOriginal;
+	}
+
+	public int getQuantidadeOriginal() {
+		return quantidadeOriginal;
+	}
+
+	public int getQuantidadeAtual() {
+		return quantidadeAtual;
+	}
 
 	private Intencao(Builder builder) {
 		this.id = GERADOR_ID.gerar();

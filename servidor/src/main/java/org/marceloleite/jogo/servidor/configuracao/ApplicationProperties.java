@@ -22,11 +22,14 @@ public class ApplicationProperties {
 	private List<String> clientes = new ArrayList<>();
 	
 	@NotNull
-	private Map<String, Long> estoqueInicial = new HashMap<>();
+	private Map<Long, Long> quantidadesIniciaisEstoque = new HashMap<>();
 	
 	@NotNull
 	@Min(0)
 	private Double caixaInicialEmpresa;
+	
+	@NotNull
+	private List<String> produtos;
 
 	public List<String> getFornecedores() {
 		return fornecedores;
@@ -52,12 +55,20 @@ public class ApplicationProperties {
 		this.clientes = clientes;
 	}
 
-	public Map<String, Long> getEstoqueInicial() {
-		return estoqueInicial;
+	public Map<Long, Long> getQuantidadesIniciaisEstoque() {
+		return quantidadesIniciaisEstoque;
 	}
 
-	public void setEstoqueInicial(Map<String, Long> estoqueInicial) {
-		this.estoqueInicial = estoqueInicial;
+	public void setQuantidadesIniciaisEstoque(Map<Long, Long> quantidadesIniciaisEstoque) {
+		this.quantidadesIniciaisEstoque = quantidadesIniciaisEstoque;
+	}
+
+	public List<String> getProdutos() {
+		return produtos;
+	}
+
+	public void setProdutos(List<String> produtos) {
+		this.produtos = produtos;
 	}
 
 }

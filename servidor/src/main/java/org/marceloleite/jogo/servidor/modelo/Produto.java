@@ -1,11 +1,9 @@
 package org.marceloleite.jogo.servidor.modelo;
 
-import java.io.Serializable;
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-public class Produto implements Serializable {
+public class Produto implements Entidade<Long> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -13,12 +11,17 @@ public class Produto implements Serializable {
 
 	@NotNull
 	@Min(1)
-	private long id;
+	private Long id;
 
 	@NotNull
 	private String nome;
+	
+	private Produto() {
+		// Construtor padrão para deserialização de objetos.
+	}
 
-	public long getId() {
+	@Override
+	public Long getId() {
 		return id;
 	}
 
@@ -29,6 +32,33 @@ public class Produto implements Serializable {
 	private Produto(Builder builder) {
 		this.id = GERADOR_ID.gerar();
 		this.nome = builder.nome;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Produto other = (Produto) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Produto [id=" + id + ", nome=" + nome + "]";
 	}
 
 	public static Builder builder() {

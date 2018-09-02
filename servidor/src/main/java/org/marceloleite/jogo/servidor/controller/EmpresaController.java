@@ -31,7 +31,8 @@ public class EmpresaController {
 
 	@GetMapping
 	public Empresa get(@RequestParam(value = "id") UUID id) {
-		return empresaBO.obter(id);
+		return empresaBO.obterPorId(id)
+				.orElse(null);
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,

@@ -28,6 +28,7 @@ public class Configuracao {
 		this.caixaInicialEmpresa = builder.caixaInicialEmpresa;
 		this.fornecedores = builder.fornecedores;
 		this.clientes = builder.clientes;
+		this.estoqueInicial = builder.estoqueInicial;
 	}
 	
 	public Double getCaixaInicialEmpresa() {
