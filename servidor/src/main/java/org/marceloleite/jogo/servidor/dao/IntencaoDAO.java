@@ -1,6 +1,7 @@
 package org.marceloleite.jogo.servidor.dao;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class IntencaoDAO implements BaseDAO<Intencao, Long> {
 	
-	private Map<Long, Intencao> intencoes;
+	private Map<Long, Intencao> intencoes = new HashMap<>();
 
 	@Override
 	public Intencao salvar(Intencao intencao) {
