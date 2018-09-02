@@ -5,17 +5,18 @@ import java.math.BigDecimal;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import org.marceloleite.jogo.servidor.validacao.grupo.GrupoValidacaoBanco;
-
 public class Intencao implements Entidade<Long> {
 
 	private static final long serialVersionUID = 1L;
 
 	private static final GeradorID<Long> GERADOR_ID = new GeradorIDSequencial();
 
-	@NotNull(groups = { GrupoValidacaoBanco.class })
+	@NotNull
 	@Min(1)
 	private Long id;
+	
+	@NotNull
+	private Empresa empresa;
 
 	@NotNull
 	private TipoIntencao tipo;
@@ -26,14 +27,18 @@ public class Intencao implements Entidade<Long> {
 	@NotNull
 	@Min(0)
 	private BigDecimal precoUnitarioOriginal;
+	
+	@NotNull
+	@Min(0)
+	private BigDecimal precoUnitarioAtual;
 
 	@NotNull
 	@Min(1)
-	private int quantidadeOriginal;
+	private BigDecimal quantidadeOriginal;
 
 	@NotNull
 	@Min(0)
-	private int quantidadeAtual;
+	private BigDecimal quantidadeAtual;
 
 	private Intencao() {
 		// Construtor padrão para deserialização de objetos.
@@ -41,6 +46,10 @@ public class Intencao implements Entidade<Long> {
 
 	public Long getId() {
 		return id;
+	}
+	
+	public Empresa getEmpresa() {
+		return empresa;
 	}
 
 	public TipoIntencao getTipo() {
@@ -54,22 +63,28 @@ public class Intencao implements Entidade<Long> {
 	public BigDecimal getPrecoUnitarioOriginal() {
 		return precoUnitarioOriginal;
 	}
+	
+	public BigDecimal getPrecoUnitarioAtual() {
+		return precoUnitarioAtual;
+	}
 
-	public int getQuantidadeOriginal() {
+	public BigDecimal getQuantidadeOriginal() {
 		return quantidadeOriginal;
 	}
 
-	public int getQuantidadeAtual() {
+	public BigDecimal getQuantidadeAtual() {
 		return quantidadeAtual;
 	}
 
 	private Intencao(Builder builder) {
 		this.id = GERADOR_ID.gerar();
+		this.empresa = builder.empresa;
 		this.tipo = builder.tipo;
 		this.produto = builder.produto;
 		this.precoUnitarioOriginal = builder.precoUnitarioOriginal;
+		this.precoUnitarioAtual = builder.precoUnitarioOriginal;
 		this.quantidadeOriginal = builder.quantidadeOriginal;
-		this.quantidadeAtual = builder.quantidadeAtual;
+		this.quantidadeAtual = builder.quantidadeOriginal;
 	}
 
 	public static Builder builder() {
@@ -78,12 +93,17 @@ public class Intencao implements Entidade<Long> {
 
 	public static final class Builder {
 		private TipoIntencao tipo;
+		private Empresa empresa;
 		private Produto produto;
 		private BigDecimal precoUnitarioOriginal;
-		private int quantidadeOriginal;
-		private int quantidadeAtual;
+		private BigDecimal quantidadeOriginal;
 
 		private Builder() {
+		}
+		
+		public Builder empresa(Empresa empresa) {
+			this.empresa = empresa;
+			return this;
 		}
 
 		public Builder tipo(TipoIntencao tipo) {
@@ -101,13 +121,8 @@ public class Intencao implements Entidade<Long> {
 			return this;
 		}
 
-		public Builder quantidadeOriginal(int quantidadeOriginal) {
+		public Builder quantidadeOriginal(BigDecimal quantidadeOriginal) {
 			this.quantidadeOriginal = quantidadeOriginal;
-			return this;
-		}
-
-		public Builder quantidadeAtual(int quantidadeAtual) {
-			this.quantidadeAtual = quantidadeAtual;
 			return this;
 		}
 
