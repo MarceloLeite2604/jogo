@@ -5,6 +5,11 @@ import java.math.BigDecimal;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import org.marceloleite.jogo.servidor.serializer.IdCampoSerializer;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 public class Intencao implements Entidade<Long> {
 
 	private static final long serialVersionUID = 1L;
@@ -14,20 +19,22 @@ public class Intencao implements Entidade<Long> {
 	@NotNull
 	@Min(1)
 	private Long id;
-	
+
 	@NotNull
+	@JsonSerialize(using = IdCampoSerializer.class)
 	private Empresa empresa;
 
 	@NotNull
 	private TipoIntencao tipo;
 
 	@NotNull
+	@JsonSerialize(using = IdCampoSerializer.class)
 	private Produto produto;
 
 	@NotNull
 	@Min(0)
 	private BigDecimal precoUnitarioOriginal;
-	
+
 	@NotNull
 	@Min(0)
 	private BigDecimal precoUnitarioAtual;
@@ -47,7 +54,7 @@ public class Intencao implements Entidade<Long> {
 	public Long getId() {
 		return id;
 	}
-	
+
 	public Empresa getEmpresa() {
 		return empresa;
 	}
@@ -63,7 +70,7 @@ public class Intencao implements Entidade<Long> {
 	public BigDecimal getPrecoUnitarioOriginal() {
 		return precoUnitarioOriginal;
 	}
-	
+
 	public BigDecimal getPrecoUnitarioAtual() {
 		return precoUnitarioAtual;
 	}
@@ -74,6 +81,11 @@ public class Intencao implements Entidade<Long> {
 
 	public BigDecimal getQuantidadeAtual() {
 		return quantidadeAtual;
+	}
+
+	@JsonIgnore
+	public BigDecimal getPrecoTotalAtual() {
+		return precoUnitarioAtual.multiply(quantidadeAtual);
 	}
 
 	private Intencao(Builder builder) {
@@ -100,7 +112,7 @@ public class Intencao implements Entidade<Long> {
 
 		private Builder() {
 		}
-		
+
 		public Builder empresa(Empresa empresa) {
 			this.empresa = empresa;
 			return this;

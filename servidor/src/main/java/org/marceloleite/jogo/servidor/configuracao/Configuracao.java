@@ -1,5 +1,6 @@
 package org.marceloleite.jogo.servidor.configuracao;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class Configuracao {
 	private List<String> clientes;
 	
 	@NotNull
-	private Map<Produto, Long> estoqueInicial;
+	private Map<Produto, BigDecimal> estoqueInicial;
 	
 	private Configuracao(Builder builder) {
 		this.caixaInicialEmpresa = builder.caixaInicialEmpresa;
@@ -43,7 +44,7 @@ public class Configuracao {
 		return clientes;
 	}
 	
-	public Map<Produto, Long> getEstoqueInicial() {
+	public Map<Produto, BigDecimal> getEstoqueInicial() {
 		return estoqueInicial;
 	}
 
@@ -55,7 +56,7 @@ public class Configuracao {
 		private Double caixaInicialEmpresa;
 		private List<String> fornecedores = Collections.emptyList();
 		private List<String> clientes = Collections.emptyList();
-		private Map<Produto, Long> estoqueInicial = Collections.emptyMap();
+		private Map<Produto, BigDecimal> estoqueInicial = Collections.emptyMap();
 
 		private Builder() {
 		}
@@ -75,7 +76,7 @@ public class Configuracao {
 			return this;
 		}
 		
-		public Builder estoqueInicial(Map<Produto, Long> estoqueInicial) {
+		public Builder estoqueInicial(Map<Produto, BigDecimal> estoqueInicial) {
 			this.estoqueInicial = estoqueInicial;
 			return this;
 		}

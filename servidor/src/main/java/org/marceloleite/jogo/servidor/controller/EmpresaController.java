@@ -2,6 +2,7 @@ package org.marceloleite.jogo.servidor.controller;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.UUID;
 
@@ -47,12 +48,14 @@ public class EmpresaController {
 				.estoque(criarEstoqueInicial())
 				.nome(requisicaoEmpresa.getNome())
 				.tipo(TipoEmpresa.JOGADOR)
+				.ofertas(new LinkedList<>())
+				.demandas(new LinkedList<>())
 				.build();
 
 		return empresaBO.salvar(empresa);
 	}
 
-	private Map<Produto, Long> criarEstoqueInicial() {
+	private Map<Produto, BigDecimal> criarEstoqueInicial() {
 		return new HashMap<>(configuracao.getEstoqueInicial());
 	}
 }

@@ -1,5 +1,6 @@
 package org.marceloleite.jogo.servidor.configuracao;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -42,7 +43,7 @@ public class JogoFactory {
 		geradorProduto.gerar(applicationProperties.getProdutos());
 	}
 
-	private Map<Produto, Long> criarEstoqueInicial(ApplicationProperties applicationProperties) {
+	private Map<Produto, BigDecimal> criarEstoqueInicial(ApplicationProperties applicationProperties) {
 		return geradorEstoqueInicial.gerar(applicationProperties.getQuantidadesIniciaisEstoque());
 	}
 }

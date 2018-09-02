@@ -1,5 +1,6 @@
 package org.marceloleite.jogo.servidor.gerador;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -17,9 +18,9 @@ public class GeradorEstoqueInicial {
 	@Inject
 	private ProdutoBO produtoBO;
 
-	public Map<Produto, Long> gerar(Map<Long, Long> quantidadesIniciaisEstoque) {
+	public Map<Produto, BigDecimal> gerar(Map<Long, Long> quantidadesIniciaisEstoque) {
 
-		Map<Produto, Long> estoqueInicial = new HashMap<>(quantidadesIniciaisEstoque.keySet()
+		Map<Produto, BigDecimal> estoqueInicial = new HashMap<>(quantidadesIniciaisEstoque.keySet()
 				.size());
 
 		for (Entry<Long, Long> entryQuantidadeInicialEstoque : quantidadesIniciaisEstoque.entrySet()) {
@@ -30,7 +31,7 @@ public class GeradorEstoqueInicial {
 					.orElseThrow(() -> new ServidorRuntimeException(
 							"Não foi possível localizar o produto de código " + id + "."));
 			
-			estoqueInicial.put(produto, quantidade);
+			estoqueInicial.put(produto, BigDecimal.valueOf(quantidade));
 		}
 
 		return estoqueInicial;

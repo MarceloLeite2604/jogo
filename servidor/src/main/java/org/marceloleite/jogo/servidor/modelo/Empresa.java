@@ -43,8 +43,8 @@ public class Empresa implements Entidade<UUID> {
 	private BigDecimal caixa;
 
 	@NotNull
-	@JsonSerialize(keyUsing = IdSerializer.class) 
-	private Map<Produto, Long> estoque;
+	@JsonSerialize(keyUsing = IdSerializer.class)
+	private Map<Produto, BigDecimal> estoque;
 
 	@NotNull
 	private List<Intencao> ofertas;
@@ -68,8 +68,12 @@ public class Empresa implements Entidade<UUID> {
 	public BigDecimal getCaixa() {
 		return caixa;
 	}
+	
+	public void setCaixa(BigDecimal caixa) {
+		this.caixa = caixa;
+	}
 
-	public Map<Produto, Long> getEstoque() {
+	public Map<Produto, BigDecimal> getEstoque() {
 		return estoque;
 	}
 
@@ -119,7 +123,7 @@ public class Empresa implements Entidade<UUID> {
 		private String nome;
 		private TipoEmpresa tipo;
 		private BigDecimal caixa;
-		private Map<Produto, Long> estoque = Collections.emptyMap();
+		private Map<Produto, BigDecimal> estoque = Collections.emptyMap();
 		private List<Intencao> ofertas = Collections.emptyList();
 		private List<Intencao> demandas = Collections.emptyList();
 
@@ -141,7 +145,7 @@ public class Empresa implements Entidade<UUID> {
 			return this;
 		}
 
-		public Builder estoque(Map<Produto, Long> estoque) {
+		public Builder estoque(Map<Produto, BigDecimal> estoque) {
 			this.estoque = estoque;
 			return this;
 		}
