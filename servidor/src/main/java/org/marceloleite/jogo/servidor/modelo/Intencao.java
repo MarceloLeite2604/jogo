@@ -1,6 +1,8 @@
 package org.marceloleite.jogo.servidor.modelo;
 
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.List;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -28,6 +30,9 @@ public class Intencao implements Entidade<Long> {
 	private TipoIntencao tipo;
 
 	@NotNull
+	private StatusIntencao status;
+
+	@NotNull
 	@JsonSerialize(using = IdCampoSerializer.class)
 	private Produto produto;
 
@@ -47,6 +52,9 @@ public class Intencao implements Entidade<Long> {
 	@Min(0)
 	private BigDecimal quantidadeAtual;
 
+	@NotNull
+	private List<Contrato> contratos;
+
 	private Intencao() {
 		// Construtor padrão para deserialização de objetos.
 	}
@@ -61,6 +69,10 @@ public class Intencao implements Entidade<Long> {
 
 	public TipoIntencao getTipo() {
 		return tipo;
+	}
+
+	public StatusIntencao getStatus() {
+		return status;
 	}
 
 	public Produto getProduto() {
@@ -82,6 +94,10 @@ public class Intencao implements Entidade<Long> {
 	public BigDecimal getQuantidadeAtual() {
 		return quantidadeAtual;
 	}
+	
+	public List<Contrato> getContratos() {
+		return contratos;
+	}
 
 	@JsonIgnore
 	public BigDecimal getPrecoTotalAtual() {
@@ -92,11 +108,13 @@ public class Intencao implements Entidade<Long> {
 		this.id = GERADOR_ID.gerar();
 		this.empresa = builder.empresa;
 		this.tipo = builder.tipo;
+		this.status = builder.status;
 		this.produto = builder.produto;
 		this.precoUnitarioOriginal = builder.precoUnitarioOriginal;
 		this.precoUnitarioAtual = builder.precoUnitarioOriginal;
 		this.quantidadeOriginal = builder.quantidadeOriginal;
 		this.quantidadeAtual = builder.quantidadeOriginal;
+		this.contratos = builder.contratos;
 	}
 
 	public static Builder builder() {
@@ -105,10 +123,12 @@ public class Intencao implements Entidade<Long> {
 
 	public static final class Builder {
 		private TipoIntencao tipo;
+		private StatusIntencao status;
 		private Empresa empresa;
 		private Produto produto;
 		private BigDecimal precoUnitarioOriginal;
 		private BigDecimal quantidadeOriginal;
+		private List<Contrato> contratos = Collections.emptyList();
 
 		private Builder() {
 		}
@@ -120,6 +140,11 @@ public class Intencao implements Entidade<Long> {
 
 		public Builder tipo(TipoIntencao tipo) {
 			this.tipo = tipo;
+			return this;
+		}
+
+		public Builder tipo(StatusIntencao status) {
+			this.status = status;
 			return this;
 		}
 
@@ -135,6 +160,11 @@ public class Intencao implements Entidade<Long> {
 
 		public Builder quantidadeOriginal(BigDecimal quantidadeOriginal) {
 			this.quantidadeOriginal = quantidadeOriginal;
+			return this;
+		}
+
+		public Builder contrato(List<Contrato> contratos) {
+			this.contratos = contratos;
 			return this;
 		}
 

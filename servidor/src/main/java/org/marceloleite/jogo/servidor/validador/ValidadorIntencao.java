@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ValidadorIntencao {
 
-	public void validar(Intencao intencao) {
+	public void validar(Intencao intencao) throws ValidacaoException {
 		if (TipoIntencao.OFERTA.equals(intencao.getTipo())) {
 			validarOferta(intencao);
 		} else {
@@ -18,7 +18,7 @@ public class ValidadorIntencao {
 		}
 	}
 
-	private void validarOferta(Intencao intencao) {
+	private void validarOferta(Intencao intencao) throws ValidacaoException {
 		BigDecimal quantidadeEstoque = intencao.getEmpresa()
 				.getEstoque()
 				.get(intencao.getProduto());
@@ -28,7 +28,7 @@ public class ValidadorIntencao {
 		}
 	}
 
-	private void validarDemanda(Intencao intencao) {
+	private void validarDemanda(Intencao intencao) throws ValidacaoException {
 		BigDecimal custo = intencao.getPrecoTotalAtual();
 		if (custo.compareTo(intencao.getEmpresa()
 				.getCaixa()) > 0) {

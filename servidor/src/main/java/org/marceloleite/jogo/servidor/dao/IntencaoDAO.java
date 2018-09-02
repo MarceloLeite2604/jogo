@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.marceloleite.jogo.servidor.modelo.Intencao;
+import org.marceloleite.jogo.servidor.modelo.StatusIntencao;
 import org.marceloleite.jogo.servidor.modelo.TipoIntencao;
 import org.springframework.stereotype.Component;
 
@@ -41,6 +42,12 @@ public class IntencaoDAO implements BaseDAO<Intencao, Long> {
 	public List<Intencao> obterPorTipo(TipoIntencao tipo) {
 		return obterTodos().stream()
 				.filter(intencao -> tipo.equals(intencao.getTipo()))
+				.collect(Collectors.toList());
+	}
+
+	public List<Intencao> obterContratosAbertos(TipoIntencao tipo) {
+		return obterPorTipo(tipo).stream()
+				.filter(intencao -> StatusIntencao.ABERTO.equals(intencao.getStatus()))
 				.collect(Collectors.toList());
 	}
 

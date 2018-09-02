@@ -16,7 +16,7 @@ public class IntencaoBO implements BaseBO<Intencao, Long> {
 	
 	@Inject
 	private IntencaoDAO intencaoDAO;
-
+	
 	@Override
 	public Intencao salvar(Intencao intencao) {
 		return intencaoDAO.salvar(intencao);
@@ -41,4 +41,8 @@ public class IntencaoBO implements BaseBO<Intencao, Long> {
 		return intencaoDAO.obterPorTipo(tipo);
 	}
 
+	public List<Intencao> obterContratosAbertos(TipoIntencao tipo) {
+		return intencaoDAO.obterContratosAbertos(tipo);
+		
+	}
 }
