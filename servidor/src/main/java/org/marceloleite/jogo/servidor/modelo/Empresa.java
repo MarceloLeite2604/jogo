@@ -4,20 +4,21 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import org.marceloleite.jogo.servidor.gerador.id.GeradorId;
+import org.marceloleite.jogo.servidor.gerador.id.GeradorIdSequencial;
 import org.marceloleite.jogo.servidor.serializer.IdSerializer;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-public class Empresa implements Entidade<UUID> {
+public class Empresa implements Entidade<Long> {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final GeradorID<UUID> GERADOR_ID = new GeradorUUID();
+	private static final GeradorId<Long> GERADOR_ID = new GeradorIdSequencial();
 
 	private Empresa(Builder builder) {
 		this.id = GERADOR_ID.gerar();
@@ -30,7 +31,7 @@ public class Empresa implements Entidade<UUID> {
 	}
 
 	@NotNull
-	private UUID id;
+	private Long id;
 
 	@NotNull
 	private String nome;
@@ -53,7 +54,7 @@ public class Empresa implements Entidade<UUID> {
 	private List<Intencao> demandas;
 
 	@Override
-	public UUID getId() {
+	public Long getId() {
 		return id;
 	}
 

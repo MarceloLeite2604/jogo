@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -15,7 +14,7 @@ import org.marceloleite.jogo.servidor.modelo.Produto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EmpresaBO implements BaseBO<Empresa, UUID> {
+public class EmpresaBO implements BaseBO<Empresa, Long> {
 
 	@Inject
 	private EmpresaDAO empresaDAO;
@@ -26,7 +25,7 @@ public class EmpresaBO implements BaseBO<Empresa, UUID> {
 	}
 
 	@Override
-	public Optional<Empresa> obterPorId(UUID id) {
+	public Optional<Empresa> obterPorId(Long id) {
 		return empresaDAO.obterPorId(id);
 	}
 
@@ -36,7 +35,7 @@ public class EmpresaBO implements BaseBO<Empresa, UUID> {
 	}
 
 	@Override
-	public boolean excluir(UUID id) {
+	public boolean excluir(Long id) {
 		return empresaDAO.excluir(id);
 	}
 
@@ -44,7 +43,7 @@ public class EmpresaBO implements BaseBO<Empresa, UUID> {
 		Map<Produto, BigDecimal> estoque = empresa.getEstoque();
 		Produto produto = intencao.getProduto();
 		estoque.put(produto, estoque.get(produto)
-				.subtract(intencao.getQuantidadeAtual()));
+				.subtract(intencao.getQuantidade()));
 		empresa.getOfertas()
 				.add(intencao);
 	}

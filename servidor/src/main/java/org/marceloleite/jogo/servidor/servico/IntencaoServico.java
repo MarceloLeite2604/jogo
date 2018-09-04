@@ -75,38 +75,37 @@ public class IntencaoServico {
 	}
 
 	private Contrato criarContrato(Intencao oferta, Intencao demanda, TipoIntencao tipoGerador) {
-		Contrato contrato = Contrato.builder()
+		return Contrato.builder()
 				.oferta(oferta)
 				.demanda(demanda)
 				.precoUnitario(calcularPrecoUnitario(oferta, demanda, tipoGerador))
 				.quantidade(calcularQuantidade(oferta, demanda))
 				.itencaoGeradora(TipoIntencao.DEMANDA)
 				.build();
-		return contrato;
 	}
 
 	private BigDecimal calcularPrecoUnitario(Intencao oferta, Intencao demanda, TipoIntencao tipoGerador) {
 		if (TipoIntencao.DEMANDA.equals(tipoGerador)) {
-			return demanda.getPrecoUnitarioAtual();
+			return demanda.getPrecoUnitario();
 		} else {
-			return oferta.getPrecoUnitarioAtual();
+			return oferta.getPrecoUnitario();
 		}
 	}
 
 	private BigDecimal calcularQuantidade(Intencao oferta, Intencao demandaCoberta) {
-		if (demandaCoberta.getQuantidadeAtual()
-				.compareTo(oferta.getQuantidadeAtual()) > 0) {
-			return demandaCoberta.getQuantidadeAtual();
+		if (demandaCoberta.getQuantidade()
+				.compareTo(oferta.getQuantidade()) > 0) {
+			return demandaCoberta.getQuantidade();
 		} else {
-			return oferta.getQuantidadeAtual();
+			return oferta.getQuantidade();
 		}
 	}
 
 	private List<Intencao> obterIntencoesAbertasCobertas(Intencao intencao) {
 		return intencaoBO.obterContratosAbertos(calcularTipoProcurado(intencao))
 				.stream()
-				.filter(intencaoObtida -> intencao.getPrecoUnitarioAtual()
-						.compareTo(intencaoObtida.getPrecoUnitarioAtual()) >= 0)
+				.filter(intencaoObtida -> intencao.getPrecoUnitario()
+						.compareTo(intencaoObtida.getPrecoUnitario()) >= 0)
 				.filter(demanda -> !intencao.getEmpresa()
 						.equals(demanda.getEmpresa()))
 				.collect(Collectors.toList());

@@ -1,7 +1,6 @@
 package org.marceloleite.jogo.servidor.modelo.requisicao;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -13,7 +12,7 @@ public class RequisicaoIntencao implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@NotNull(message = "O código de identificação da empresa não pode ser nulo.")
-	private UUID idEmpresa;
+	private Long idEmpresa;
 	
 	@NotNull(message = "O tipo de intenção não pode ser nulo.")
 	private TipoIntencao tipo;
@@ -33,11 +32,11 @@ public class RequisicaoIntencao implements Serializable {
 		// Construtor padrão para deserialização de objetos desta classe.
 	}
 
-	public UUID getIdEmpresa() {
+	public Long getIdEmpresa() {
 		return idEmpresa;
 	}
 
-	public void setIdEmpresa(UUID idEmpresa) {
+	public void setIdEmpresa(Long idEmpresa) {
 		this.idEmpresa = idEmpresa;
 	}
 

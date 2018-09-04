@@ -7,6 +7,8 @@ import java.util.List;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import org.marceloleite.jogo.servidor.gerador.id.GeradorId;
+import org.marceloleite.jogo.servidor.gerador.id.GeradorIdSequencial;
 import org.marceloleite.jogo.servidor.serializer.IdCampoSerializer;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,7 +18,7 @@ public class Intencao implements Entidade<Long> {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final GeradorID<Long> GERADOR_ID = new GeradorIDSequencial();
+	private static final GeradorId<Long> GERADOR_ID = new GeradorIdSequencial();
 
 	@NotNull
 	@Min(1)
@@ -38,21 +40,12 @@ public class Intencao implements Entidade<Long> {
 
 	@NotNull
 	@Min(0)
-	private BigDecimal precoUnitarioOriginal;
-
-	@NotNull
-	@Min(0)
-	private BigDecimal precoUnitarioAtual;
+	private BigDecimal precoUnitario;
 
 	@NotNull
 	@Min(1)
-	private BigDecimal quantidadeOriginal;
+	private BigDecimal quantidade;
 
-	@NotNull
-	@Min(0)
-	private BigDecimal quantidadeAtual;
-
-	@NotNull
 	private List<Contrato> contratos;
 
 	private Intencao() {
@@ -79,29 +72,21 @@ public class Intencao implements Entidade<Long> {
 		return produto;
 	}
 
-	public BigDecimal getPrecoUnitarioOriginal() {
-		return precoUnitarioOriginal;
+	public BigDecimal getPrecoUnitario() {
+		return precoUnitario;
 	}
 
-	public BigDecimal getPrecoUnitarioAtual() {
-		return precoUnitarioAtual;
+	public BigDecimal getQuantidade() {
+		return quantidade;
 	}
 
-	public BigDecimal getQuantidadeOriginal() {
-		return quantidadeOriginal;
-	}
-
-	public BigDecimal getQuantidadeAtual() {
-		return quantidadeAtual;
-	}
-	
 	public List<Contrato> getContratos() {
 		return contratos;
 	}
 
 	@JsonIgnore
 	public BigDecimal getPrecoTotalAtual() {
-		return precoUnitarioAtual.multiply(quantidadeAtual);
+		return precoUnitario.multiply(quantidade);
 	}
 
 	private Intencao(Builder builder) {
@@ -110,10 +95,8 @@ public class Intencao implements Entidade<Long> {
 		this.tipo = builder.tipo;
 		this.status = builder.status;
 		this.produto = builder.produto;
-		this.precoUnitarioOriginal = builder.precoUnitarioOriginal;
-		this.precoUnitarioAtual = builder.precoUnitarioOriginal;
-		this.quantidadeOriginal = builder.quantidadeOriginal;
-		this.quantidadeAtual = builder.quantidadeOriginal;
+		this.precoUnitario = builder.precoUnitario;
+		this.quantidade = builder.quantidade;
 		this.contratos = builder.contratos;
 	}
 
@@ -126,8 +109,8 @@ public class Intencao implements Entidade<Long> {
 		private StatusIntencao status;
 		private Empresa empresa;
 		private Produto produto;
-		private BigDecimal precoUnitarioOriginal;
-		private BigDecimal quantidadeOriginal;
+		private BigDecimal precoUnitario;
+		private BigDecimal quantidade;
 		private List<Contrato> contratos = Collections.emptyList();
 
 		private Builder() {
@@ -153,13 +136,13 @@ public class Intencao implements Entidade<Long> {
 			return this;
 		}
 
-		public Builder precoUnitarioOriginal(BigDecimal precoUnitarioOriginal) {
-			this.precoUnitarioOriginal = precoUnitarioOriginal;
+		public Builder precoUnitario(BigDecimal precoUnitario) {
+			this.precoUnitario = precoUnitario;
 			return this;
 		}
 
-		public Builder quantidadeOriginal(BigDecimal quantidadeOriginal) {
-			this.quantidadeOriginal = quantidadeOriginal;
+		public Builder quantidade(BigDecimal quantidade) {
+			this.quantidade = quantidade;
 			return this;
 		}
 

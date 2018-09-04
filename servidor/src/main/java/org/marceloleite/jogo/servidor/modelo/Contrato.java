@@ -5,11 +5,14 @@ import java.math.BigDecimal;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import org.marceloleite.jogo.servidor.gerador.id.GeradorId;
+import org.marceloleite.jogo.servidor.gerador.id.GeradorIdSequencial;
+
 public class Contrato implements Entidade<Long> {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private static final GeradorID<Long> GERADOR_ID = new GeradorIDSequencial();
+	private static final GeradorId<Long> GERADOR_ID = new GeradorIdSequencial();
 	
 	@NotNull
 	@Min(1)

@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -34,7 +33,7 @@ public class EmpresaController {
 	private Configuracao configuracao;
 
 	@GetMapping
-	public Empresa get(@RequestParam(value = "id") UUID id) {
+	public Empresa get(@RequestParam Long id) {
 		return empresaBO.obterPorId(id)
 				.orElse(null);
 	}

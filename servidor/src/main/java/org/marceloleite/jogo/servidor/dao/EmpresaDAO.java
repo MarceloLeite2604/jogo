@@ -4,15 +4,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.marceloleite.jogo.servidor.modelo.Empresa;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EmpresaDAO implements BaseDAO<Empresa, UUID> {
+public class EmpresaDAO implements BaseDAO<Empresa, Long> {
 
-	Map<UUID, Empresa> empresas = new HashMap<>();
+	Map<Long, Empresa> empresas = new HashMap<>();
 
 	@Override
 	public Empresa salvar(Empresa empresa) {
@@ -21,7 +20,7 @@ public class EmpresaDAO implements BaseDAO<Empresa, UUID> {
 	}
 
 	@Override
-	public Optional<Empresa> obterPorId(UUID id) {
+	public Optional<Empresa> obterPorId(Long id) {
 		return Optional.ofNullable(empresas.get(id));
 	}
 
@@ -31,7 +30,7 @@ public class EmpresaDAO implements BaseDAO<Empresa, UUID> {
 	}
 
 	@Override
-	public boolean excluir(UUID id) {
+	public boolean excluir(Long id) {
 		return Optional.ofNullable(empresas.remove(id))
 				.isPresent();
 	}

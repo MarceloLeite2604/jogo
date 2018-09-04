@@ -1,7 +1,6 @@
 package org.marceloleite.jogo.servidor.gerador;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -31,8 +30,8 @@ public class GeradorIntencao {
 				.empresa(empresa)
 				.produto(produto)
 				.tipo(requisicaoIntencao.getTipo())
-				.precoUnitarioOriginal(BigDecimal.valueOf(requisicaoIntencao.getPrecoUnitario()))
-				.quantidadeOriginal(BigDecimal.valueOf(requisicaoIntencao.getQuantidade()))
+				.precoUnitario(BigDecimal.valueOf(requisicaoIntencao.getPrecoUnitario()))
+				.quantidade(BigDecimal.valueOf(requisicaoIntencao.getQuantidade()))
 				.build();
 	}
 
@@ -42,9 +41,9 @@ public class GeradorIntencao {
 						"Não foi possível localizar o produto de código " + id + "."));
 	}
 
-	private Empresa obterEmpresa(UUID id) {
+	private Empresa obterEmpresa(Long id) {
 		return empresaBO.obterPorId(id)
 				.orElseThrow(() -> new ServidorRuntimeException(
-						"Não é foi possivel localizar a empresa de código \"" + id + "\"."));
+						"Não é foi possivel localizar a empresa de código " + id + "."));
 	}
 }

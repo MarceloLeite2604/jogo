@@ -6,9 +6,12 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import org.marceloleite.jogo.servidor.gerador.id.GeradorId;
+import org.marceloleite.jogo.servidor.gerador.id.GeradorIdSequencial;
+
 public class Periodo {
 	
-	private static final GeradorID<Long> GERADOR_ID = new GeradorIDSequencial();
+	private static final GeradorId<Long> GERADOR_ID = new GeradorIdSequencial();
 	
 	@NotNull
 	private Long id;
