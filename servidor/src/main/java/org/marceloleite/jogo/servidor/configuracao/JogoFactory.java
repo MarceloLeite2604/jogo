@@ -2,12 +2,15 @@ package org.marceloleite.jogo.servidor.configuracao;
 
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.inject.Inject;
 
+import org.marceloleite.jogo.servidor.configuracao.propriedades.ApplicationProperties;
 import org.marceloleite.jogo.servidor.gerador.GeradorEstoqueInicial;
 import org.marceloleite.jogo.servidor.gerador.GeradorProduto;
 import org.marceloleite.jogo.servidor.modelo.Produto;
+import org.marceloleite.libs.crypt.Crypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -45,5 +48,15 @@ public class JogoFactory {
 
 	private Map<Produto, BigDecimal> criarEstoqueInicial(ApplicationProperties applicationProperties) {
 		return geradorEstoqueInicial.gerar(applicationProperties.getQuantidadesIniciaisEstoque());
+	}
+	
+	@Bean
+	public Crypt createEncryptorDecryptor() {
+		return Crypt.builder()
+				.keyEnvironmentVariableName(Optional.of("JOGO_ENCRYPT_KEY"))
+				.cryptographicAlgorythm("DESede")
+				.feedbackMode("CBC")
+				.paddingScheme("PKCS5Padding")
+				.build();
 	}
 }

@@ -1,14 +1,22 @@
 package org.marceloleite.jogo.servidor.validador;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
+import javax.inject.Inject;
+
+import org.marceloleite.jogo.servidor.bo.ItemEstoqueBO;
 import org.marceloleite.jogo.servidor.excecao.ValidacaoException;
 import org.marceloleite.jogo.servidor.modelo.Intencao;
+import org.marceloleite.jogo.servidor.modelo.ItemEstoque;
 import org.marceloleite.jogo.servidor.modelo.TipoIntencao;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ValidadorIntencao {
+
+	@Inject
+	private ItemEstoqueBO itemEstoqueBO;
 
 	public void validar(Intencao intencao) throws ValidacaoException {
 		if (TipoIntencao.OFERTA.equals(intencao.getTipo())) {
@@ -19,11 +27,10 @@ public class ValidadorIntencao {
 	}
 
 	private void validarOferta(Intencao intencao) throws ValidacaoException {
-		BigDecimal quantidadeEstoque = intencao.getEmpresa()
-				.getEstoque()
-				.get(intencao.getProduto());
-		if (intencao.getQuantidade()
-				.compareTo(quantidadeEstoque) > 0) {
+		Optional<ItemEstoque> optionalItemEstoque = itemEstoqueBO.obter(intencao.getEmpresa(), intencao.getProduto());
+		if (!optionalItemEstoque.isPresent() || intencao.getQuantidade()
+				.compareTo(optionalItemEstoque.get()
+						.getQuantidade()) > 0) {
 			throw new ValidacaoException("A quantidade informada na intenção excede a quantidade em estoque.");
 		}
 	}

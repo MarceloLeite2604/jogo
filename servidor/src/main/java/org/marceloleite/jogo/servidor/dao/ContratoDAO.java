@@ -6,7 +6,9 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.marceloleite.jogo.servidor.modelo.Contrato;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ContratoDAO implements BaseDAO<Contrato, Long> {
 	
 	private Map<Long, Contrato> contratos = new HashMap<>();

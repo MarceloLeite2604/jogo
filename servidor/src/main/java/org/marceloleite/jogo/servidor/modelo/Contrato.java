@@ -2,34 +2,61 @@ package org.marceloleite.jogo.servidor.modelo;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.marceloleite.jogo.servidor.gerador.id.GeradorId;
 import org.marceloleite.jogo.servidor.gerador.id.GeradorIdSequencial;
 
+@Entity
+@Table(name = "contratos")
+@SequenceGenerator(name = "cont",
+		sequenceName = "cont",
+		allocationSize = 1)
 public class Contrato implements Entidade<Long> {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private static final GeradorId<Long> GERADOR_ID = new GeradorIdSequencial();
-	
+
+	@Id
+	@Column(name = "id",
+			nullable = false)
 	@NotNull
 	@Min(1)
 	private Long id;
-	
+
+	@JoinColumn(name = "inte_id_oferta",
+			nullable = false)
 	@NotNull
+	@ManyToOne
 	private Intencao oferta;
-	
+
+	@JoinColumn(name = "inte_id_demanda",
+			nullable = false)
 	@NotNull
+	@ManyToOne
 	private Intencao demanda;
-	
+
+	@Column(name = "quantidade",
+			nullable = false)
 	@NotNull
 	private BigDecimal quantidade;
-	
+
+	@Column(name = "preco_unitario",
+			nullable = false)
 	@NotNull
 	private BigDecimal precoUnitario;
-	
+
+	@Column(name = "tipo_intencao_geradora",
+			nullable = false)
 	@NotNull
 	private TipoIntencao itencaoGeradora;
 
@@ -110,6 +137,5 @@ public class Contrato implements Entidade<Long> {
 			return new Contrato(this);
 		}
 	}
-	
-	
+
 }

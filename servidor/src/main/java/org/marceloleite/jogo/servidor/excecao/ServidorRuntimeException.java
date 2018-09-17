@@ -7,5 +7,9 @@ public class ServidorRuntimeException extends RuntimeException {
 	public ServidorRuntimeException(String mensagem) {
 		super(mensagem);
 	}
+	
+	public ServidorRuntimeException(String mensagem, Throwable motivo) {
+		super(mensagem, motivo);
+	}
 
 }

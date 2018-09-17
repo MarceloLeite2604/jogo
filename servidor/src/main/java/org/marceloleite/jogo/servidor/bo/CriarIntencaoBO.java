@@ -1,4 +1,4 @@
-package org.marceloleite.jogo.servidor.servico;
+package org.marceloleite.jogo.servidor.bo;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -8,16 +8,15 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-import org.marceloleite.jogo.servidor.bo.ContratoBO;
-import org.marceloleite.jogo.servidor.bo.EmpresaBO;
-import org.marceloleite.jogo.servidor.bo.IntencaoBO;
 import org.marceloleite.jogo.servidor.excecao.ValidacaoException;
 import org.marceloleite.jogo.servidor.modelo.Contrato;
 import org.marceloleite.jogo.servidor.modelo.Intencao;
 import org.marceloleite.jogo.servidor.modelo.TipoIntencao;
 import org.marceloleite.jogo.servidor.validador.ValidadorIntencao;
+import org.springframework.stereotype.Component;
 
-public class IntencaoServico {
+@Component
+public class CriarIntencaoBO {
 
 	@Inject
 	private IntencaoBO intencaoBO;
@@ -57,7 +56,7 @@ public class IntencaoServico {
 		for (Intencao demandaCoberta : demandasCobertas) {
 			Contrato contrato = criarContrato(oferta, demandaCoberta, oferta.getTipo());
 			contratoBO.salvar(contrato);
-			oferta.getContratos()
+			oferta.getContratosOferta()
 					.add(contrato);
 			// TODO Atualizar quantidades nas intencoes.
 		}
@@ -68,7 +67,7 @@ public class IntencaoServico {
 		for (Intencao ofertaCoberta : ofertasCobertas) {
 			Contrato contrato = criarContrato(ofertaCoberta, demanda, demanda.getTipo());
 			contratoBO.salvar(contrato);
-			demanda.getContratos()
+			demanda.getContratosDemanda()
 					.add(contrato);
 			// TODO Atualizar quantidades nas intencoes.
 		}

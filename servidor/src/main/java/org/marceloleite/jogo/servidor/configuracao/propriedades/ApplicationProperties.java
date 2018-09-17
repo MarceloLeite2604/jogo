@@ -1,4 +1,4 @@
-package org.marceloleite.jogo.servidor.configuracao;
+package org.marceloleite.jogo.servidor.configuracao.propriedades;
 
 import java.util.ArrayList;
 import java.util.HashMap;

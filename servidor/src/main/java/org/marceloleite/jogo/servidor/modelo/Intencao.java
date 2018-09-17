@@ -4,6 +4,14 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -14,39 +22,62 @@ import org.marceloleite.jogo.servidor.serializer.IdCampoSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+@Entity
+@Table(name = "intencoes")
+@SequenceGenerator(name = "inte",
+		sequenceName = "inte")
 public class Intencao implements Entidade<Long> {
 
 	private static final long serialVersionUID = 1L;
 
 	private static final GeradorId<Long> GERADOR_ID = new GeradorIdSequencial();
 
+	@Id
+	@Column(name = "id",
+			nullable = false)
 	@NotNull
 	@Min(1)
 	private Long id;
 
 	@NotNull
+	@ManyToOne
+	@JoinColumn(name="empr_id")
 	@JsonSerialize(using = IdCampoSerializer.class)
 	private Empresa empresa;
 
+	@Column(name = "tipo",
+			nullable = false)
 	@NotNull
 	private TipoIntencao tipo;
 
+	@Column(name = "status",
+			nullable = false)
 	@NotNull
 	private StatusIntencao status;
 
 	@NotNull
+	@ManyToOne
+	@JoinColumn(name="prod_id")
 	@JsonSerialize(using = IdCampoSerializer.class)
 	private Produto produto;
 
+	@Column(name = "preco_unitario",
+			nullable = false)
 	@NotNull
 	@Min(0)
 	private BigDecimal precoUnitario;
 
+	@Column(name = "quantidade",
+			nullable = false)
 	@NotNull
 	@Min(1)
 	private BigDecimal quantidade;
 
-	private List<Contrato> contratos;
+	@OneToMany(mappedBy = "demanda")
+	private List<Contrato> contratosDemanda;
+
+	@OneToMany(mappedBy = "oferta")
+	private List<Contrato> contratosOferta;
 
 	private Intencao() {
 		// Construtor padrão para deserialização de objetos.
@@ -80,8 +111,12 @@ public class Intencao implements Entidade<Long> {
 		return quantidade;
 	}
 
-	public List<Contrato> getContratos() {
-		return contratos;
+	public List<Contrato> getContratosDemanda() {
+		return contratosDemanda;
+	}
+
+	public List<Contrato> getContratosOferta() {
+		return contratosOferta;
 	}
 
 	@JsonIgnore
@@ -97,7 +132,8 @@ public class Intencao implements Entidade<Long> {
 		this.produto = builder.produto;
 		this.precoUnitario = builder.precoUnitario;
 		this.quantidade = builder.quantidade;
-		this.contratos = builder.contratos;
+		this.contratosOferta = builder.contratosOferta;
+		this.contratosDemanda = builder.contratosDemanda;
 	}
 
 	public static Builder builder() {
@@ -111,7 +147,8 @@ public class Intencao implements Entidade<Long> {
 		private Produto produto;
 		private BigDecimal precoUnitario;
 		private BigDecimal quantidade;
-		private List<Contrato> contratos = Collections.emptyList();
+		private List<Contrato> contratosOferta = Collections.emptyList();
+		private List<Contrato> contratosDemanda = Collections.emptyList();
 
 		private Builder() {
 		}
@@ -146,8 +183,13 @@ public class Intencao implements Entidade<Long> {
 			return this;
 		}
 
-		public Builder contrato(List<Contrato> contratos) {
-			this.contratos = contratos;
+		public Builder contratosOferta(List<Contrato> contratosOferta) {
+			this.contratosOferta = contratosOferta;
+			return this;
+		}
+
+		public Builder contratosDemanda(List<Contrato> contratosDemanda) {
+			this.contratosDemanda = contratosDemanda;
 			return this;
 		}
 
@@ -155,5 +197,4 @@ public class Intencao implements Entidade<Long> {
 			return new Intencao(this);
 		}
 	}
-
 }

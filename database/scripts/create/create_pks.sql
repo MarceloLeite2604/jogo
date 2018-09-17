@@ -18,19 +18,11 @@ ALTER TABLE contratos
 ADD CONSTRAINT cont_pk
 PRIMARY KEY (id);
 
-PROMPT 'Criando chave primária esto_pk.'
-ALTER TABLE estoque 
-ADD CONSTRAINT esto_pk
+PROMPT 'Criando chave primária ites_pk.'
+ALTER TABLE itens_estoque 
+ADD CONSTRAINT ites_pk
 PRIMARY KEY
 (
     prod_id,
     empr_id
-);
-
-PROMPT 'Criando chave primária emin_pk.'
-ALTER TABLE empresas_intencoes
-ADD CONTRAINT emin_pk
-(
-    empr_id,
-    inte_id
 );

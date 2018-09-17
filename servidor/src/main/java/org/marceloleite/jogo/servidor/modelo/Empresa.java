@@ -3,17 +3,26 @@ package org.marceloleite.jogo.servidor.modelo;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Where;
 import org.marceloleite.jogo.servidor.gerador.id.GeradorId;
 import org.marceloleite.jogo.servidor.gerador.id.GeradorIdSequencial;
-import org.marceloleite.jogo.servidor.serializer.IdSerializer;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
+@Entity
+@Table(name = "empresas")
+@SequenceGenerator(name = "empr",
+		sequenceName = "empr",
+		allocationSize = 1)
 public class Empresa implements Entidade<Long> {
 
 	private static final long serialVersionUID = 1L;
@@ -30,27 +39,41 @@ public class Empresa implements Entidade<Long> {
 		this.demandas = builder.demandas;
 	}
 
+	@Id
+	@GeneratedValue(generator = "empr")
+	@Column(name = "id",
+			nullable = false)
 	@NotNull
 	private Long id;
 
+	@Column(name = "nome",
+			nullable = false)
 	@NotNull
 	private String nome;
 
+	@Column(name = "tipo",
+			nullable = false)
 	@NotNull
 	private TipoEmpresa tipo;
 
+	@Column(name = "caixa",
+			nullable = false)
 	@NotNull
 	@Min(0)
 	private BigDecimal caixa;
 
 	@NotNull
-	@JsonSerialize(keyUsing = IdSerializer.class)
-	private Map<Produto, BigDecimal> estoque;
+	@OneToMany(mappedBy = "empresa")
+	private List<ItemEstoque> estoque;
 
 	@NotNull
+	@OneToMany(mappedBy = "empresa")
+	@Where(clause = "tipo = 0")
 	private List<Intencao> ofertas;
 
 	@NotNull
+	@OneToMany(mappedBy = "empresa")
+	@Where(clause = "tipo = 1")
 	private List<Intencao> demandas;
 
 	@Override
@@ -69,12 +92,12 @@ public class Empresa implements Entidade<Long> {
 	public BigDecimal getCaixa() {
 		return caixa;
 	}
-	
+
 	public void setCaixa(BigDecimal caixa) {
 		this.caixa = caixa;
 	}
 
-	public Map<Produto, BigDecimal> getEstoque() {
+	public List<ItemEstoque> getEstoque() {
 		return estoque;
 	}
 
@@ -124,7 +147,7 @@ public class Empresa implements Entidade<Long> {
 		private String nome;
 		private TipoEmpresa tipo;
 		private BigDecimal caixa;
-		private Map<Produto, BigDecimal> estoque = Collections.emptyMap();
+		private List<ItemEstoque> estoque = Collections.emptyList();
 		private List<Intencao> ofertas = Collections.emptyList();
 		private List<Intencao> demandas = Collections.emptyList();
 
@@ -146,7 +169,7 @@ public class Empresa implements Entidade<Long> {
 			return this;
 		}
 
-		public Builder estoque(Map<Produto, BigDecimal> estoque) {
+		public Builder estoque(List<ItemEstoque> estoque) {
 			this.estoque = estoque;
 			return this;
 		}
