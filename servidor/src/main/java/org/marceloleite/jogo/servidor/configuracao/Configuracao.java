@@ -8,8 +8,6 @@ import java.util.Map;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import org.marceloleite.jogo.servidor.modelo.Produto;
-
 public class Configuracao {
 
 	@NotNull
@@ -23,7 +21,7 @@ public class Configuracao {
 	private List<String> clientes;
 	
 	@NotNull
-	private Map<Produto, BigDecimal> estoqueInicial;
+	private Map<String, BigDecimal> estoqueInicial;
 	
 	private Configuracao(Builder builder) {
 		this.caixaInicialEmpresa = builder.caixaInicialEmpresa;
@@ -44,7 +42,7 @@ public class Configuracao {
 		return clientes;
 	}
 	
-	public Map<Produto, BigDecimal> getEstoqueInicial() {
+	public Map<String, BigDecimal> getEstoqueInicial() {
 		return estoqueInicial;
 	}
 
@@ -56,7 +54,7 @@ public class Configuracao {
 		private Double caixaInicialEmpresa;
 		private List<String> fornecedores = Collections.emptyList();
 		private List<String> clientes = Collections.emptyList();
-		private Map<Produto, BigDecimal> estoqueInicial = Collections.emptyMap();
+		private Map<String, BigDecimal> estoqueInicial = Collections.emptyMap();
 
 		private Builder() {
 		}
@@ -76,7 +74,7 @@ public class Configuracao {
 			return this;
 		}
 		
-		public Builder estoqueInicial(Map<Produto, BigDecimal> estoqueInicial) {
+		public Builder estoqueInicial(Map<String, BigDecimal> estoqueInicial) {
 			this.estoqueInicial = estoqueInicial;
 			return this;
 		}

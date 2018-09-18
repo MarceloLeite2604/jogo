@@ -1,37 +1,38 @@
 package org.marceloleite.jogo.servidor.dao;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
+import javax.inject.Inject;
+
+import org.marceloleite.jogo.servidor.dao.repository.EmpresaRepository;
 import org.marceloleite.jogo.servidor.modelo.Empresa;
 import org.springframework.stereotype.Component;
 
 @Component
 public class EmpresaDAO implements BaseDAO<Empresa, Long> {
 
-	Map<Long, Empresa> empresas = new HashMap<>();
+	@Inject
+	private EmpresaRepository empresaRepository;
 
 	@Override
 	public Empresa salvar(Empresa empresa) {
-		empresas.put(empresa.getId(), empresa);
-		return empresa;
+		return empresaRepository.save(empresa);
 	}
 
 	@Override
 	public Optional<Empresa> obterPorId(Long id) {
-		return Optional.ofNullable(empresas.get(id));
+		return empresaRepository.findById(id);
 	}
 
 	@Override
-	public Collection<Empresa> obterTodos() {
-		return empresas.values();
+	public Iterable<Empresa> obterTodos() {
+		return empresaRepository.findAll();
 	}
 
 	@Override
 	public boolean excluir(Long id) {
-		return Optional.ofNullable(empresas.remove(id))
-				.isPresent();
+		Optional<Empresa> optionalEmpresa = obterPorId(id);
+		optionalEmpresa.ifPresent(empresaRepository::delete);
+		return optionalEmpresa.isPresent();
 	}
 }

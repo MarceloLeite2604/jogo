@@ -6,10 +6,9 @@ import java.util.Optional;
 
 import javax.inject.Inject;
 
-import org.marceloleite.jogo.servidor.configuracao.propriedades.ApplicationProperties;
+import org.marceloleite.jogo.servidor.configuracao.propriedades.PropriedadesJogo;
+import org.marceloleite.jogo.servidor.configuracao.propriedades.PropriedadesProdutos;
 import org.marceloleite.jogo.servidor.gerador.GeradorEstoqueInicial;
-import org.marceloleite.jogo.servidor.gerador.GeradorProduto;
-import org.marceloleite.jogo.servidor.modelo.Produto;
 import org.marceloleite.libs.crypt.Crypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,34 +19,24 @@ import org.springframework.context.annotation.Configuration;
 public class JogoFactory {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(JogoFactory.class);
-
-	@Inject
-	private GeradorEstoqueInicial geradorEstoqueInicial;
 	
 	@Inject
-	private GeradorProduto geradorProduto;
+	private GeradorEstoqueInicial geradorEstoqueInicial;
 
 	@Bean
-	public Configuracao criarConfiguracao(ApplicationProperties applicationProperties) {
+	public Configuracao criarConfiguracao(PropriedadesJogo propriedadesJogo) {
 		LOGGER.debug("Criando a configuração do jogo.");
 		
-		gerarProdutos(applicationProperties);
-		
 		return Configuracao.builder()
-				.caixaInicialEmpresa(applicationProperties.getCaixaInicialEmpresa())
-				.clientes(applicationProperties.getClientes())
-				.fornecedores(applicationProperties.getFornecedores())
-				.estoqueInicial(criarEstoqueInicial(applicationProperties))
+				.caixaInicialEmpresa(propriedadesJogo.getCaixaInicialEmpresa())
+				.clientes(propriedadesJogo.getClientes())
+				.fornecedores(propriedadesJogo.getFornecedores())
+				.estoqueInicial(criarEstoqueInicial(propriedadesJogo.getPropriedadesProdutos()))
 				.build();
 	}
 
-	private void gerarProdutos(ApplicationProperties applicationProperties) {
-		LOGGER.debug("Criando produtos.");
-		geradorProduto.gerar(applicationProperties.getProdutos());
-	}
-
-	private Map<Produto, BigDecimal> criarEstoqueInicial(ApplicationProperties applicationProperties) {
-		return geradorEstoqueInicial.gerar(applicationProperties.getQuantidadesIniciaisEstoque());
+	private Map<String, BigDecimal> criarEstoqueInicial(PropriedadesProdutos propriedadesProdutos) {
+		return geradorEstoqueInicial.gerar(propriedadesProdutos);
 	}
 	
 	@Bean

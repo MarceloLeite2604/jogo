@@ -15,8 +15,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import org.marceloleite.jogo.servidor.gerador.id.GeradorId;
-import org.marceloleite.jogo.servidor.gerador.id.GeradorIdSequencial;
 import org.marceloleite.jogo.servidor.serializer.IdCampoSerializer;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -30,12 +28,9 @@ public class Intencao implements Entidade<Long> {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final GeradorId<Long> GERADOR_ID = new GeradorIdSequencial();
-
 	@Id
 	@Column(name = "id",
 			nullable = false)
-	@NotNull
 	@Min(1)
 	private Long id;
 
@@ -83,6 +78,17 @@ public class Intencao implements Entidade<Long> {
 		// Construtor padrão para deserialização de objetos.
 	}
 
+	private Intencao(Builder builder) {
+		this.empresa = builder.empresa;
+		this.tipo = builder.tipo;
+		this.status = builder.status;
+		this.produto = builder.produto;
+		this.precoUnitario = builder.precoUnitario;
+		this.quantidade = builder.quantidade;
+		this.contratosOferta = builder.contratosOferta;
+		this.contratosDemanda = builder.contratosDemanda;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -122,18 +128,6 @@ public class Intencao implements Entidade<Long> {
 	@JsonIgnore
 	public BigDecimal getPrecoTotalAtual() {
 		return precoUnitario.multiply(quantidade);
-	}
-
-	private Intencao(Builder builder) {
-		this.id = GERADOR_ID.gerar();
-		this.empresa = builder.empresa;
-		this.tipo = builder.tipo;
-		this.status = builder.status;
-		this.produto = builder.produto;
-		this.precoUnitario = builder.precoUnitario;
-		this.quantidade = builder.quantidade;
-		this.contratosOferta = builder.contratosOferta;
-		this.contratosDemanda = builder.contratosDemanda;
 	}
 
 	public static Builder builder() {

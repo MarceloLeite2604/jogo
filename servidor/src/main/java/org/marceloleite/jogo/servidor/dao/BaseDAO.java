@@ -1,6 +1,5 @@
 package org.marceloleite.jogo.servidor.dao;
 
-import java.util.Collection;
 import java.util.Optional;
 
 public interface BaseDAO<T, I> {
@@ -9,7 +8,7 @@ public interface BaseDAO<T, I> {
 	
 	Optional<T> obterPorId(I id);
 	
-	Collection<T> obterTodos();
+	Iterable<T> obterTodos();
 	
 	boolean excluir(I id);
 }

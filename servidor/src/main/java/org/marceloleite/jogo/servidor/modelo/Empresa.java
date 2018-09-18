@@ -15,8 +15,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Where;
-import org.marceloleite.jogo.servidor.gerador.id.GeradorId;
-import org.marceloleite.jogo.servidor.gerador.id.GeradorIdSequencial;
 
 @Entity
 @Table(name = "empresas")
@@ -27,10 +25,11 @@ public class Empresa implements Entidade<Long> {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final GeradorId<Long> GERADOR_ID = new GeradorIdSequencial();
+	protected Empresa() {
+		// Construtor padrão para deserialização de objetos.
+	}
 
 	private Empresa(Builder builder) {
-		this.id = GERADOR_ID.gerar();
 		this.nome = builder.nome;
 		this.tipo = builder.tipo;
 		this.caixa = builder.caixa;
@@ -43,7 +42,6 @@ public class Empresa implements Entidade<Long> {
 	@GeneratedValue(generator = "empr")
 	@Column(name = "id",
 			nullable = false)
-	@NotNull
 	private Long id;
 
 	@Column(name = "nome",
@@ -63,7 +61,7 @@ public class Empresa implements Entidade<Long> {
 	private BigDecimal caixa;
 
 	@NotNull
-	@OneToMany(mappedBy = "empresa")
+	@OneToMany(mappedBy = "id.empresa")
 	private List<ItemEstoque> estoque;
 
 	@NotNull

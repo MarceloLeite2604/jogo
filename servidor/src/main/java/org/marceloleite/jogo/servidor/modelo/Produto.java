@@ -8,9 +8,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import org.marceloleite.jogo.servidor.gerador.id.GeradorId;
-import org.marceloleite.jogo.servidor.gerador.id.GeradorIdSequencial;
-
 @Entity
 @Table(name = "produtos")
 @SequenceGenerator(name = "prod",
@@ -19,11 +16,8 @@ public class Produto implements Entidade<Long> {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final GeradorId<Long> GERADOR_ID = new GeradorIdSequencial();
-
 	@Id
 	@Column(name="id", nullable = false)
-	@NotNull
 	@Min(1)
 	private Long id;
 
@@ -45,7 +39,6 @@ public class Produto implements Entidade<Long> {
 	}
 
 	private Produto(Builder builder) {
-		this.id = GERADOR_ID.gerar();
 		this.nome = builder.nome;
 	}
 

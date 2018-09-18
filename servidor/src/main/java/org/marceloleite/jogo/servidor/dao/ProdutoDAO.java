@@ -1,38 +1,42 @@
 package org.marceloleite.jogo.servidor.dao;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
+import javax.inject.Inject;
+
+import org.marceloleite.jogo.servidor.dao.repository.ProdutoRepository;
 import org.marceloleite.jogo.servidor.modelo.Produto;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ProdutoDAO implements BaseDAO<Produto, Long> {
-
-	private Map<Long, Produto> produtos = new HashMap<>();
+	
+	@Inject
+	private ProdutoRepository produtoRepository;
 
 	@Override
 	public Produto salvar(Produto produto) {
-		produtos.put(produto.getId(), produto);
-		return produto;
+		return produtoRepository.save(produto);
 	}
 
 	@Override
 	public Optional<Produto> obterPorId(Long id) {
-		return Optional.ofNullable(produtos.get(id));
+		return produtoRepository.findById(id);
 	}
 
 	@Override
-	public Collection<Produto> obterTodos() {
-		return produtos.values();
+	public Iterable<Produto> obterTodos() {
+		return produtoRepository.findAll();
 	}
 
 	@Override
 	public boolean excluir(Long id) {
-		return Optional.ofNullable(produtos.remove(id))
-				.isPresent();
+		Optional<Produto> optionalProduto = obterPorId(id);
+		optionalProduto.ifPresent(produtoRepository::delete);
+		return optionalProduto.isPresent();
+	}
 
+	public Optional<Produto> obterPorNome(String nome) {
+		return produtoRepository.findOptionalByNome(nome);
 	}
 }

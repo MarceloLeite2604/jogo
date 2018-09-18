@@ -25,7 +25,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(entityManagerFactoryRef = "createEntityManagerFactory")
+@EnableJpaRepositories(entityManagerFactoryRef = "createEntityManagerFactory",
+		basePackages = "org.marceloleite.jogo.servidor.dao.repository")
 public class ConfiguracaoPersistence {
 
 	private static final Logger LOGGER = LogManager.getLogger(ConfiguracaoPersistence.class);

@@ -30,7 +30,10 @@ public class ProdutoController {
 	}
 
 	private ArrayList<Produto> obterTodos() {
-		return new ArrayList<>(produtoBO.obterTodos());
+		Iterable<Produto> iterableProdutos = produtoBO.obterTodos();
+		ArrayList<Produto> produtos = new ArrayList<>();
+		iterableProdutos.forEach(produtos::add);
+		return produtos;
 	}
 
 	private List<Produto> obterPorId(Long id) {

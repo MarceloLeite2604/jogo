@@ -3,37 +3,26 @@ package org.marceloleite.jogo.servidor.gerador;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
-import javax.inject.Inject;
-
-import org.marceloleite.jogo.servidor.bo.ProdutoBO;
-import org.marceloleite.jogo.servidor.excecao.ServidorRuntimeException;
-import org.marceloleite.jogo.servidor.modelo.Produto;
+import org.marceloleite.jogo.servidor.configuracao.propriedades.PropriedadesProdutos;
 import org.springframework.stereotype.Component;
 
 @Component
 public class GeradorEstoqueInicial {
 
-	@Inject
-	private ProdutoBO produtoBO;
+	public Map<String, BigDecimal> gerar(PropriedadesProdutos propriedadesProdutos) {
 
-	public Map<Produto, BigDecimal> gerar(Map<Long, Long> quantidadesIniciaisEstoque) {
-
-		Map<Produto, BigDecimal> estoqueInicial = new HashMap<>(quantidadesIniciaisEstoque.keySet()
+		Map<String, BigDecimal> estoqueInicial = new HashMap<>(propriedadesProdutos.getNome()
 				.size());
 
-		for (Entry<Long, Long> entryQuantidadeInicialEstoque : quantidadesIniciaisEstoque.entrySet()) {
-			Long id = entryQuantidadeInicialEstoque.getKey();
-			Long quantidade = entryQuantidadeInicialEstoque.getValue();
-			
-			Produto produto = produtoBO.obterPorId(entryQuantidadeInicialEstoque.getKey())
-					.orElseThrow(() -> new ServidorRuntimeException(
-							"Não foi possível localizar o produto de código " + id + "."));
-			
-			estoqueInicial.put(produto, BigDecimal.valueOf(quantidade));
+		for (int contador = 0; contador < propriedadesProdutos.getNome()
+				.size(); contador++) {
+			String nome = propriedadesProdutos.getNome()
+					.get(contador);
+			BigDecimal quantidade = BigDecimal.valueOf(propriedadesProdutos.getQuantidadeInicial()
+					.get(contador));
+			estoqueInicial.put(nome, quantidade);
 		}
-
 		return estoqueInicial;
 	}
 }

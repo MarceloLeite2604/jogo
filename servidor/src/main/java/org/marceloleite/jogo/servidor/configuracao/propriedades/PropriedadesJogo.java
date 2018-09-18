@@ -1,19 +1,20 @@
 package org.marceloleite.jogo.servidor.configuracao.propriedades;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+@Valid
 @Configuration
 @ConfigurationProperties("jogo")
-public class ApplicationProperties {
+public class PropriedadesJogo {
 
 	@NotNull
 	private List<String> fornecedores = new ArrayList<>();
@@ -22,15 +23,12 @@ public class ApplicationProperties {
 	private List<String> clientes = new ArrayList<>();
 	
 	@NotNull
-	private Map<Long, Long> quantidadesIniciaisEstoque = new HashMap<>();
-	
-	@NotNull
 	@Min(0)
 	private Double caixaInicialEmpresa;
 	
-	@NotNull
-	private List<String> produtos;
-
+	@Inject
+	private PropriedadesProdutos propriedadesProdutos;
+	
 	public List<String> getFornecedores() {
 		return fornecedores;
 	}
@@ -54,21 +52,9 @@ public class ApplicationProperties {
 	public void setClientes(List<String> clientes) {
 		this.clientes = clientes;
 	}
-
-	public Map<Long, Long> getQuantidadesIniciaisEstoque() {
-		return quantidadesIniciaisEstoque;
-	}
-
-	public void setQuantidadesIniciaisEstoque(Map<Long, Long> quantidadesIniciaisEstoque) {
-		this.quantidadesIniciaisEstoque = quantidadesIniciaisEstoque;
-	}
-
-	public List<String> getProdutos() {
-		return produtos;
-	}
-
-	public void setProdutos(List<String> produtos) {
-		this.produtos = produtos;
+	
+	public PropriedadesProdutos getPropriedadesProdutos() {
+		return propriedadesProdutos;
 	}
 
 }

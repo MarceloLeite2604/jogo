@@ -26,7 +26,7 @@ public class ContratoBO implements BaseBO<Contrato, Long> {
 	}
 
 	@Override
-	public Collection<Contrato> obterTodos() {
+	public Iterable<Contrato> obterTodos() {
 		return contratoDAO.obterTodos();
 	}
 
