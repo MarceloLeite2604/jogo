@@ -2,8 +2,8 @@ package org.marceloleite.jogo.servidor;
 
 import javax.inject.Inject;
 
+import org.marceloleite.jogo.servidor.bo.JogoBO;
 import org.marceloleite.jogo.servidor.configuracao.JogoFactory;
-import org.marceloleite.jogo.servidor.modelo.Jogo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -20,7 +20,7 @@ public class Main {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 	
 	@Inject
-	private Jogo jogo;
+	private JogoBO jogoBO;
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
@@ -30,7 +30,7 @@ public class Main {
     public CommandLineRunner commandLineRunner(ApplicationContext applicationContext) {
         return args -> {
         	LOGGER.debug("Programa iniciado.");
-        	jogo.inicializar();
+        	jogoBO.inicializar();
         };
     }
 

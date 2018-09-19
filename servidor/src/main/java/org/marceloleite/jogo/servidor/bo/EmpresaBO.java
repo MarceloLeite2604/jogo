@@ -21,6 +21,9 @@ public class EmpresaBO {
 
 	@Inject
 	private EmpresaDAO empresaDAO;
+	
+	@Inject
+	private PartidaBO partidaBO;
 
 	@Inject
 	private ItemEstoqueBO itemEstoqueBO;
@@ -31,9 +34,11 @@ public class EmpresaBO {
 	public Empresa criar(RequisicaoEmpresa requisicaoEmpresa) {
 
 		Empresa empresa = Empresa.builder()
+				.partida(partidaBO.obter())
 				.caixa(BigDecimal.valueOf(configuracao.getCaixaInicialEmpresa()))
 				.nome(requisicaoEmpresa.getNome())
 				.tipo(TipoEmpresa.JOGADOR)
+				.estoque(new LinkedList<>())
 				.ofertas(new LinkedList<>())
 				.demandas(new LinkedList<>())
 				.build();
@@ -52,10 +57,9 @@ public class EmpresaBO {
 		return empresaDAO.obterPorId(id);
 	}
 
-//	@Override
-//	public Iterable<Empresa> obterTodos() {
-//		return empresaDAO.obterTodos();
-//	}
+	public Iterable<Empresa> obterTodos() {
+		return empresaDAO.obterTodos();
+	}
 
 	public boolean excluir(Long id) {
 		return empresaDAO.excluir(id);
@@ -99,7 +103,13 @@ public class EmpresaBO {
 				.subtract(intencao.getPrecoTotalAtual()));
 	}
 
-	public Object obterTodas() {
-		return empresaDAO.obterTodos();
+	public Empresa obterOuCriar(Empresa empresa) {
+		Optional<Empresa> optionalEmpresa = empresaDAO.obterPorPartidaNome(empresa.getPartida(), empresa.getNome());
+
+		if (optionalEmpresa.isPresent()) {
+			return optionalEmpresa.get();
+		} else {
+			return empresaDAO.salvar(empresa);
+		}
 	}
 }

@@ -2,11 +2,15 @@ package org.marceloleite.jogo.servidor.modelo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "produtos")
@@ -17,14 +21,20 @@ public class Produto implements Entidade<Long> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="id", nullable = false)
-	@Min(1)
+	@GeneratedValue(generator = "prod")
+	@Column(name = "id",
+			nullable = false)
 	private Long id;
 
+	@ManyToOne
+	@JoinColumn(name="part_id")
+	private Partida partida;
+
 	@NotNull
-	@Column(name="nome", nullable = false)
+	@Column(name = "nome",
+			nullable = false)
 	private String nome;
-	
+
 	private Produto() {
 		// Construtor padrão para deserialização de objetos.
 	}
@@ -34,11 +44,17 @@ public class Produto implements Entidade<Long> {
 		return id;
 	}
 
+	@JsonIgnore
+	public Partida getPartida() {
+		return partida;
+	}
+
 	public String getNome() {
 		return nome;
 	}
 
 	private Produto(Builder builder) {
+		this.partida = builder.partida;
 		this.nome = builder.nome;
 	}
 
@@ -74,9 +90,15 @@ public class Produto implements Entidade<Long> {
 	}
 
 	public static final class Builder {
+		private Partida partida;
 		private String nome;
 
 		private Builder() {
+		}
+
+		public Builder partida(Partida partida) {
+			this.partida = partida;
+			return this;
 		}
 
 		public Builder nome(String nome) {

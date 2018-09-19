@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -15,6 +17,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Where;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "empresas")
@@ -30,6 +34,7 @@ public class Empresa implements Entidade<Long> {
 	}
 
 	private Empresa(Builder builder) {
+		this.partida = builder.partida;
 		this.nome = builder.nome;
 		this.tipo = builder.tipo;
 		this.caixa = builder.caixa;
@@ -43,6 +48,10 @@ public class Empresa implements Entidade<Long> {
 	@Column(name = "id",
 			nullable = false)
 	private Long id;
+	
+	@ManyToOne
+	@JoinColumn(name="part_id")
+	private Partida partida;
 
 	@Column(name = "nome",
 			nullable = false)
@@ -77,6 +86,11 @@ public class Empresa implements Entidade<Long> {
 	@Override
 	public Long getId() {
 		return id;
+	}
+	
+	@JsonIgnore
+	public Partida getPartida() {
+		return partida;
 	}
 
 	public String getNome() {
@@ -142,6 +156,7 @@ public class Empresa implements Entidade<Long> {
 	}
 
 	public static final class Builder {
+		private Partida partida;
 		private String nome;
 		private TipoEmpresa tipo;
 		private BigDecimal caixa;
@@ -150,6 +165,11 @@ public class Empresa implements Entidade<Long> {
 		private List<Intencao> demandas = Collections.emptyList();
 
 		private Builder() {
+		}
+		
+		public Builder partida(Partida partida) {
+			this.partida = partida;
+			return this;
 		}
 
 		public Builder nome(String nome) {

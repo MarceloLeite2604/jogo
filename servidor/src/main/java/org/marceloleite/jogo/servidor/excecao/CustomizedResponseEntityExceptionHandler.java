@@ -2,6 +2,8 @@ package org.marceloleite.jogo.servidor.excecao;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 @RestController
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(CustomizedResponseEntityExceptionHandler.class);
 
 	private static final HttpStatus HTTP_STATUS_EXCECOES_GERAIS = HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -21,6 +25,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
 	@ExceptionHandler(Exception.class)
 	public final ResponseEntity<Object> tratarExcecoesGerais(Exception excecao, WebRequest requisicao) {
+		LOGGER.error("{}", excecao);
 		Map<String, Object> errorAttributes = obterErrorAttributes(requisicao, HTTP_STATUS_EXCECOES_GERAIS);
 		errorAttributes.put("message", "Ocorreu um erro ao processar a requisição.");
 		return ResponseEntity.status(HTTP_STATUS_EXCECOES_GERAIS)

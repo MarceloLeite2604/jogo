@@ -6,6 +6,8 @@ import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Embeddable
 public class ItemEstoqueId implements Serializable {
 
@@ -28,6 +30,7 @@ public class ItemEstoqueId implements Serializable {
 		this.produto = builder.produto;
 	}
 
+	@JsonIgnore
 	public Empresa getEmpresa() {
 		return empresa;
 	}

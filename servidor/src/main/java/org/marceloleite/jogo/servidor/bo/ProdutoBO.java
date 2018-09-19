@@ -14,6 +14,9 @@ public class ProdutoBO {
 	@Inject
 	private ProdutoDAO produtoDAO;
 
+	@Inject
+	private PartidaBO partidaBO;
+
 //	public Produto salvar(Produto produto) {
 //		return produtoDAO.salvar(produto);
 //	}
@@ -21,7 +24,7 @@ public class ProdutoBO {
 	public Optional<Produto> obterPorId(Long id) {
 		return produtoDAO.obterPorId(id);
 	}
-	
+
 	public Iterable<Produto> obterTodos() {
 		return produtoDAO.obterTodos();
 	}
@@ -29,16 +32,22 @@ public class ProdutoBO {
 //	public boolean excluir(Long id) {
 //		return produtoDAO.excluir(id);
 //	}
-	
+
 	public Produto obterOuCriar(String nome) {
 		Optional<Produto> optionalProduto = produtoDAO.obterPorNome(nome);
-		
+
 		if (optionalProduto.isPresent()) {
 			return optionalProduto.get();
 		} else {
-			Produto produto = Produto.builder().nome(nome).build();
-			return produtoDAO.salvar(produto);
+			return produtoDAO.salvar(criarProduto(nome));
 		}
+	}
+
+	private Produto criarProduto(String nome) {
+		return Produto.builder()
+				.partida(partidaBO.obter())
+				.nome(nome)
+				.build();
 	}
 
 }

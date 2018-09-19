@@ -30,7 +30,7 @@ public class EmpresaController {
 					.orElseThrow(() -> new JogoRegraNegocioException(
 							"Não foi possível encontrar a empresa de código " + id + "."));
 		} else {
-			return empresaBO.obterTodas();
+			return empresaBO.obterTodos();
 		}
 	}
 
