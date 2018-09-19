@@ -1,3 +1,8 @@
+PROMPT 'Criando chave primária part_pk.'
+ALTER TABLE partidas
+ADD CONSTRAINT part_pk
+PRIMARY KEY (id);
+
 PROMPT 'Criando chave primária empr_pk.'
 ALTER TABLE empresas
 ADD CONSTRAINT empr_pk

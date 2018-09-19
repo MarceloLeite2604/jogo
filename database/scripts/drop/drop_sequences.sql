@@ -1,3 +1,6 @@
+PROMPT 'Excluindo sequence part.'
+DROP SEQUENCE part;
+
 PROMPT 'Excluindo sequence empr.'
 DROP SEQUENCE empr;
 

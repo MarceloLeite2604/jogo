@@ -1,3 +1,15 @@
+PROMPT 'Criando chave estrangeira empr_part_fk.'
+ALTER TABLE empresas
+ADD CONSTRAINT empr_part_fk
+FOREIGN KEY (part_id)
+REFERENCES partidas (id);
+
+PROMPT 'Criando chave estrangeira prod_part_fk.'
+ALTER TABLE produtos 
+ADD CONSTRAINT prod_part_fk
+FOREIGN KEY (part_id)
+REFERENCES partidas (id);
+
 PROMPT 'Criando chave estrangeira cont_inte_ofer_fk.'
 ALTER TABLE contratos
 ADD CONSTRAINT cont_inte_ofer_fk

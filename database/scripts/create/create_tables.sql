@@ -1,7 +1,15 @@
+PROMPT 'Criando tabela partidas.'
+CREATE TABLE partidas
+(
+    id NUMBER(10) NOT NULL,
+    instante TIMESTAMP WITH TIME ZONE
+);
+
 PROMPT 'Criando tabela empresa.'
 CREATE TABLE empresas
 (
     id NUMBER(10) NOT NULL,
+    part_id NUMBER(10) NOT NULL,
     nome VARCHAR2(64 CHAR) NOT NULL,
     tipo NUMBER(1) NOT NULL,
     caixa NUMBER(20,5) NOT NULL
@@ -11,6 +19,7 @@ PROMPT 'Criando tabela produtos.'
 CREATE TABLE produtos
 (
     id NUMBER(10) NOT NULL,
+    part_id NUMBER(10) NOT NULL,
     nome VARCHAR2(64 CHAR) NOT NULL
 );
 

@@ -1,6 +1,3 @@
-PROMPT 'Excluindo conteúdo de empresas_intencoes.'
-DELETE FROM empresas_intencoes;
-
 PROMPT 'Excluindo conteúdo de itens_estoque.'
 DELETE FROM itens_estoque;
 
@@ -15,3 +12,7 @@ DELETE FROM produtos;
 
 PROMPT 'Excluindo conteúdo de empresas.'
 DELETE FROM empresas;
+
+PROMPT 'Excluindo conteúdo de partidas.'
+DELETE FROM partidas;
+
