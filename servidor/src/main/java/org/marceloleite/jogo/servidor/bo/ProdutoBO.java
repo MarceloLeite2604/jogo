@@ -5,6 +5,8 @@ import java.util.Optional;
 import javax.inject.Inject;
 
 import org.marceloleite.jogo.servidor.dao.ProdutoDAO;
+import org.marceloleite.jogo.servidor.excecao.JogoRegraNegocioException;
+import org.marceloleite.jogo.servidor.modelo.Empresa;
 import org.marceloleite.jogo.servidor.modelo.Produto;
 import org.springframework.stereotype.Component;
 
@@ -17,10 +19,6 @@ public class ProdutoBO {
 	@Inject
 	private PartidaBO partidaBO;
 
-//	public Produto salvar(Produto produto) {
-//		return produtoDAO.salvar(produto);
-//	}
-
 	public Optional<Produto> obterPorId(Long id) {
 		return produtoDAO.obterPorId(id);
 	}
@@ -29,18 +27,23 @@ public class ProdutoBO {
 		return produtoDAO.obterTodos();
 	}
 
-//	public boolean excluir(Long id) {
-//		return produtoDAO.excluir(id);
-//	}
-
 	public Produto obterOuCriar(String nome) {
-		Optional<Produto> optionalProduto = produtoDAO.obterPorNome(nome);
+		Optional<Produto> optionalProduto = produtoDAO.obterPorPartidaNome(partidaBO.obter(), nome);
 
 		if (optionalProduto.isPresent()) {
 			return optionalProduto.get();
 		} else {
 			return produtoDAO.salvar(criarProduto(nome));
 		}
+	}
+
+	public Iterable<Empresa> obterPorPartida() {
+		return produtoDAO.obterPorPartida(partidaBO.obter());
+	}
+
+	public Produto obterPorIdOuLancarExcecao(Long id) {
+		return produtoDAO.obterPorId(id)
+				.orElseThrow(() -> new JogoRegraNegocioException("Não existe um produto com o id " + id + " nesta partida."));
 	}
 
 	private Produto criarProduto(String nome) {

@@ -3,7 +3,6 @@ package org.marceloleite.jogo.servidor.controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import javax.inject.Inject;
 
@@ -22,11 +21,13 @@ public class ProdutoController {
 	private ProdutoBO produtoBO;
 
 	@GetMapping
-	public List<Produto> get(@RequestParam(value = "id",
+	public Object get(@RequestParam(value = "id",
 			required = false) Long id) {
-		return Optional.ofNullable(id)
-				.map(this::obterPorId)
-				.orElse(obterTodos());
+		if (id != null) {
+			return produtoBO.obterPorIdOuLancarExcecao(id);
+		} else {
+			return produtoBO.obterPorPartida();
+		}
 	}
 
 	private ArrayList<Produto> obterTodos() {

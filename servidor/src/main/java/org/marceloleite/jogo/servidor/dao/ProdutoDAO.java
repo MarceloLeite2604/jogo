@@ -5,6 +5,8 @@ import java.util.Optional;
 import javax.inject.Inject;
 
 import org.marceloleite.jogo.servidor.dao.repository.ProdutoRepository;
+import org.marceloleite.jogo.servidor.modelo.Empresa;
+import org.marceloleite.jogo.servidor.modelo.Partida;
 import org.marceloleite.jogo.servidor.modelo.Produto;
 import org.springframework.stereotype.Component;
 
@@ -38,5 +40,13 @@ public class ProdutoDAO implements BaseDAO<Produto, Long> {
 
 	public Optional<Produto> obterPorNome(String nome) {
 		return produtoRepository.findOptionalByNome(nome);
+	}
+
+	public Iterable<Empresa> obterPorPartida(Partida partida) {
+		return produtoRepository.findByPartida(partida);
+	}
+
+	public Optional<Produto> obterPorPartidaNome(Partida partida, String nome) {
+		return produtoRepository.findByPartidaAndNome(partida, nome);
 	}
 }

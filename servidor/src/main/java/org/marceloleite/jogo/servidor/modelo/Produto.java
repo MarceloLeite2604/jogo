@@ -15,7 +15,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "produtos")
 @SequenceGenerator(name = "prod",
-		sequenceName = "prod")
+		sequenceName = "prod",
+		allocationSize = 1)
 public class Produto implements Entidade<Long> {
 
 	private static final long serialVersionUID = 1L;
