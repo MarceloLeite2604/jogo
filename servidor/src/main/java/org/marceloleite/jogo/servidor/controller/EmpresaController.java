@@ -30,16 +30,14 @@ public class EmpresaController {
 					.orElseThrow(() -> new JogoRegraNegocioException(
 							"Não foi possível encontrar a empresa de código " + id + "."));
 		} else {
-			return empresaBO.obterTodos();
+			return empresaBO.obterPorPartida();
 		}
 	}
 
 	@DeleteMapping
-	public String delete(@RequestParam Long id) {
-		if (!empresaBO.excluir(id)) {
-			throw new JogoRegraNegocioException("Não existe uma empresa de código " + id + " para excluir.");
-		}
-		return "Empresa de código " + id + "excluída.";
+	public String delete(@RequestParam(required = true) long id) {
+		empresaBO.excluirDaPartidaAtual(id);
+		return "Empresa de código " + id + " excluída.";
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,

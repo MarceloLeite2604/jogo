@@ -38,11 +38,27 @@ public class EmpresaDAO implements BaseDAO<Empresa, Long> {
 		return optionalEmpresa.isPresent();
 	}
 
+	public boolean excluirPorPartidaId(Partida partida, Long id) {
+		Optional<Empresa> optionalEmpresa = obterPorPartidaId(partida, id);
+		if (optionalEmpresa.isPresent()) {
+			empresaRepository.deleteByPartidaAndId(partida, id);
+		}
+		return optionalEmpresa.isPresent();
+	}
+
+	private Optional<Empresa> obterPorPartidaId(Partida partida, Long id) {
+		return empresaRepository.findOptionalByPartidaAndId(partida, id);
+	}
+
 	public long excluirPorTipo(TipoEmpresa tipo) {
 		return empresaRepository.deleteByTipo(tipo);
 	}
 
 	public Optional<Empresa> obterPorPartidaNome(Partida partida, String nome) {
 		return empresaRepository.findOptionalByPartidaAndNome(partida, nome);
+	}
+
+	public Iterable<Empresa> obterPorPartida(Partida partida) {
+		return empresaRepository.findByPartida(partida);
 	}
 }

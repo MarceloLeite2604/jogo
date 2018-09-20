@@ -9,28 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-@RestController
-public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(CustomizedResponseEntityExceptionHandler.class);
-
-	private static final HttpStatus HTTP_STATUS_EXCECOES_GERAIS = HttpStatus.INTERNAL_SERVER_ERROR;
+public class CustomizedResponseEntityExceptionHandler {
 
 	private static final HttpStatus HTTP_STATUS_REGRA_NEGOCIO = HttpStatus.UNPROCESSABLE_ENTITY;
-
-	@ExceptionHandler(Exception.class)
-	public final ResponseEntity<Object> tratarExcecoesGerais(Exception excecao, WebRequest requisicao) {
-		LOGGER.error("{}", excecao);
-		Map<String, Object> errorAttributes = obterErrorAttributes(requisicao, HTTP_STATUS_EXCECOES_GERAIS);
-		errorAttributes.put("message", "Ocorreu um erro ao processar a requisição.");
-		return ResponseEntity.status(HTTP_STATUS_EXCECOES_GERAIS)
-				.body(errorAttributes);
-	}
 
 	@ExceptionHandler(JogoRegraNegocioException.class)
 	public final ResponseEntity<Object> tratarExcecoesRegraNegocio(Exception excecao, WebRequest requisicao) {

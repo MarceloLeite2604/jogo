@@ -15,4 +15,10 @@ public interface EmpresaRepository extends CrudRepository<Empresa, Long> {
 
 	Optional<Empresa> findOptionalByPartidaAndNome(Partida partida, String nome);
 
+	Iterable<Empresa> findByPartida(Partida partida);
+
+	Optional<Empresa> findOptionalByPartidaAndId(Partida partida, Long id);
+
+	void deleteByPartidaAndId(Partida partida, Long id);
+
 }
