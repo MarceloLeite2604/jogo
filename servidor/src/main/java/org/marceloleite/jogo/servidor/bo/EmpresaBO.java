@@ -57,7 +57,6 @@ public class EmpresaBO {
 				.isPresent()) {
 			throw new JogoRegraNegocioException("Já existe uma empresa com o nome \"" + nome + "\".");
 		}
-
 	}
 
 	public Empresa salvar(Empresa empresa) {

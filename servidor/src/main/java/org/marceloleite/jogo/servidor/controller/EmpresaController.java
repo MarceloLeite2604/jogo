@@ -26,9 +26,7 @@ public class EmpresaController {
 	@GetMapping
 	public Object get(@RequestParam(required = false) Long id) {
 		if (id != null) {
-			return empresaBO.obterPorId(id)
-					.orElseThrow(() -> new JogoRegraNegocioException(
-							"Não foi possível encontrar a empresa de código " + id + "."));
+			return empresaBO.obterPorIdOuLancarExcecao(id);
 		} else {
 			return empresaBO.obterPorPartida();
 		}
