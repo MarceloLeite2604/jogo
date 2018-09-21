@@ -4,13 +4,12 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Optional;
 
 import javax.inject.Inject;
 
 import org.marceloleite.jogo.servidor.configuracao.Configuracao;
+import org.marceloleite.jogo.servidor.excecao.JogoRegraNegocioException;
 import org.marceloleite.jogo.servidor.modelo.Empresa;
-import org.marceloleite.jogo.servidor.modelo.Intencao;
 import org.marceloleite.jogo.servidor.modelo.ItemEstoque;
 import org.marceloleite.jogo.servidor.modelo.ItemEstoqueId;
 import org.marceloleite.jogo.servidor.modelo.Produto;
@@ -25,17 +24,15 @@ public class ItemEstoqueBO {
 	@Inject
 	private ProdutoBO produtoBO;
 
-	public Optional<ItemEstoque> obter(Empresa empresa, Produto produto) {
+	public ItemEstoque obter(Empresa empresa, Produto produto) {
 		return empresa.getEstoque()
 				.stream()
 				.filter(item -> item.getId()
 						.getProduto()
 						.equals(produto))
-				.findFirst();
-	}
-
-	public Optional<ItemEstoque> obter(Intencao intencao) {
-		return obter(intencao.getEmpresa(), intencao.getProduto());
+				.findFirst()
+				.orElseThrow(() -> new JogoRegraNegocioException("Não foi possível localizar o produto "
+						+ produto.getId() + " no estoque da empresa " + empresa.getId() + "."));
 	}
 
 	public List<ItemEstoque> criarEstoqueInicial(Empresa empresa) {

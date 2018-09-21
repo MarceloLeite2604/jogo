@@ -1,46 +1,55 @@
 package org.marceloleite.jogo.servidor.dao;
 
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+
+import org.marceloleite.jogo.servidor.dao.repository.IntencaoRepository;
 import org.marceloleite.jogo.servidor.modelo.Intencao;
 import org.marceloleite.jogo.servidor.modelo.StatusIntencao;
 import org.marceloleite.jogo.servidor.modelo.TipoIntencao;
+import org.marceloleite.jogo.servidor.util.IterableUtil;
 import org.springframework.stereotype.Component;
 
 @Component
 public class IntencaoDAO implements BaseDAO<Intencao, Long> {
 
-	private Map<Long, Intencao> intencoes = new HashMap<>();
+	@Inject
+	private IntencaoRepository intencaoRepository;
+
+	@Inject
+	private IterableUtil iterableUtil;
 
 	@Override
 	public Intencao salvar(Intencao intencao) {
-		intencoes.put(intencao.getId(), intencao);
-		return intencao;
+		return intencaoRepository.save(intencao);
 	}
 
 	@Override
 	public Optional<Intencao> obterPorId(Long id) {
-		return Optional.ofNullable(intencoes.get(id));
+		return intencaoRepository.findById(id);
 	}
 
 	@Override
-	public Collection<Intencao> obterTodos() {
-		return intencoes.values();
+	public Iterable<Intencao> obterTodos() {
+		return intencaoRepository.findAll();
 	}
 
 	@Override
 	public boolean excluir(Long id) {
-		return Optional.ofNullable(intencoes.remove(id))
-				.isPresent();
+		Optional<Intencao> optionalIntencao = obterPorId(id);
+
+		if (optionalIntencao.isPresent()) {
+			intencaoRepository.delete(optionalIntencao.get());
+		}
+		return optionalIntencao.isPresent();
 	}
 
 	public List<Intencao> obterPorTipo(TipoIntencao tipo) {
-		return obterTodos().stream()
+		return iterableUtil.toList(obterTodos())
+				.stream()
 				.filter(intencao -> tipo.equals(intencao.getTipo()))
 				.collect(Collectors.toList());
 	}

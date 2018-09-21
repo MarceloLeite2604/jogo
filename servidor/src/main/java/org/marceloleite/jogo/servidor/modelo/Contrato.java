@@ -15,6 +15,8 @@ import javax.validation.constraints.NotNull;
 import org.marceloleite.jogo.servidor.gerador.id.GeradorId;
 import org.marceloleite.jogo.servidor.gerador.id.GeradorIdSequencial;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "contratos")
 @SequenceGenerator(name = "cont",
@@ -33,12 +35,14 @@ public class Contrato implements Entidade<Long> {
 	@Min(1)
 	private Long id;
 
+	@JsonIgnore
 	@JoinColumn(name = "inte_id_oferta",
 			nullable = false)
 	@NotNull
 	@ManyToOne
 	private Intencao oferta;
 
+	@JsonIgnore
 	@JoinColumn(name = "inte_id_demanda",
 			nullable = false)
 	@NotNull

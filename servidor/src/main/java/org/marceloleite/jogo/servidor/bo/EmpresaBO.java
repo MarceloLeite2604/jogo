@@ -12,7 +12,6 @@ import org.marceloleite.jogo.servidor.excecao.JogoRegraNegocioException;
 import org.marceloleite.jogo.servidor.modelo.Empresa;
 import org.marceloleite.jogo.servidor.modelo.Intencao;
 import org.marceloleite.jogo.servidor.modelo.ItemEstoque;
-import org.marceloleite.jogo.servidor.modelo.ItemEstoqueId;
 import org.marceloleite.jogo.servidor.modelo.TipoEmpresa;
 import org.marceloleite.jogo.servidor.modelo.requisicao.RequisicaoEmpresa;
 import org.springframework.stereotype.Component;
@@ -73,7 +72,7 @@ public class EmpresaBO {
 
 	public boolean excluirDaPartidaAtual(Long id) {
 		Empresa empresa = obterPorIdOuLancarExcecao(id);
-		
+
 		if (!isEmpresaNaPartida(empresa)) {
 			throw new JogoRegraNegocioException("A empresa com o id " + id + " não faz parte da partida atual.");
 		}
@@ -81,7 +80,7 @@ public class EmpresaBO {
 		if (!isEmpresaJogadora(empresa)) {
 			throw new JogoRegraNegocioException("A empresa com o id " + id + " não é um jogador.");
 		}
-		
+
 		return empresaDAO.excluir(id);
 	}
 
@@ -89,7 +88,7 @@ public class EmpresaBO {
 		return partidaBO.obter()
 				.equals(empresa.getPartida());
 	}
-	
+
 	private boolean isEmpresaJogadora(Empresa empresa) {
 		return (empresa.getTipo() == TipoEmpresa.JOGADOR);
 	}
@@ -100,28 +99,7 @@ public class EmpresaBO {
 	}
 
 	public void atualizarEstoque(Empresa empresa, Intencao intencao) {
-		Optional<ItemEstoque> optionalItemEstoque = itemEstoqueBO.obter(empresa, intencao.getProduto());
-		if (optionalItemEstoque.isPresent()) {
-			atualizarItemEstoque(intencao, optionalItemEstoque.get());
-		} else {
-			empresa.getEstoque()
-					.add(criarItemEstoque(empresa, intencao));
-		}
-	}
-
-	private ItemEstoque criarItemEstoque(Empresa empresa, Intencao intencao) {
-		ItemEstoqueId id = ItemEstoqueId.builder()
-				.empresa(empresa)
-				.produto(intencao.getProduto())
-				.build();
-
-		return ItemEstoque.builder()
-				.id(id)
-				.quantidade(intencao.getQuantidade())
-				.build();
-	}
-
-	private void atualizarItemEstoque(Intencao intencao, ItemEstoque itemEstoque) {
+		ItemEstoque itemEstoque = itemEstoqueBO.obter(empresa, intencao.getProduto());
 		BigDecimal novaQuantidade = itemEstoque.getQuantidade()
 				.subtract(intencao.getQuantidade());
 		itemEstoque.setQuantidade(novaQuantidade);

@@ -1,15 +1,11 @@
 package org.marceloleite.jogo.servidor.controller;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.validation.Valid;
 
 import org.marceloleite.jogo.servidor.bo.CriarIntencaoBO;
-import org.marceloleite.jogo.servidor.excecao.ValidacaoException;
-import org.marceloleite.jogo.servidor.gerador.GeradorIntencao;
+import org.marceloleite.jogo.servidor.bo.IntencaoBO;
 import org.marceloleite.jogo.servidor.modelo.Intencao;
-import org.marceloleite.jogo.servidor.modelo.TipoIntencao;
 import org.marceloleite.jogo.servidor.modelo.requisicao.RequisicaoIntencao;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,19 +21,22 @@ public class IntencaoController {
 
 	@Inject
 	private CriarIntencaoBO criarIntencaoBO;
-
+	
 	@Inject
-	private GeradorIntencao geradorIntencao;
+	private IntencaoBO intencaoBO;
 
 	@GetMapping
-	public List<Intencao> get(@RequestParam(required = false) Long id,
-			@RequestParam(required = false) TipoIntencao tipo) {
-		return criarIntencaoBO.obter(id, tipo);
+	public Object get(@RequestParam(required = false) Long id) {
+		if ( id != null ) {
+			return intencaoBO.obterPorIdOuLancarExcecao(id);
+		}
+		
+		return intencaoBO.obterTodos();
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public Intencao post(@Valid @RequestBody RequisicaoIntencao requisicaoIntencao) throws ValidacaoException {
-		return criarIntencaoBO.criar(geradorIntencao.gerar(requisicaoIntencao));
+	public Intencao post(@Valid @RequestBody RequisicaoIntencao requisicaoIntencao) {
+		return criarIntencaoBO.criar(requisicaoIntencao);
 	}
 }

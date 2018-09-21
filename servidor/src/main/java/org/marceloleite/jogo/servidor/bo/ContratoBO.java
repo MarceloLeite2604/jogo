@@ -1,6 +1,8 @@
 package org.marceloleite.jogo.servidor.bo;
 
+import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -11,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ContratoBO implements BaseBO<Contrato, Long> {
-	
+
 	@Inject
 	private ContratoDAO contratoDAO;
 
@@ -33,6 +35,12 @@ public class ContratoBO implements BaseBO<Contrato, Long> {
 	@Override
 	public boolean excluir(Long id) {
 		return contratoDAO.excluir(id);
+	}
+
+	public BigDecimal calcularQuantidadeTotal(List<Contrato> contratos) {
+		return contratos.stream()
+				.map(Contrato::getQuantidade)
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 
 }

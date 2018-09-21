@@ -37,7 +37,7 @@ public class ProdutoBO {
 		}
 	}
 
-	public Iterable<Empresa> obterPorPartida() {
+	public Iterable<Produto> obterPorPartida() {
 		return produtoDAO.obterPorPartida(partidaBO.obter());
 	}
 

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -48,9 +49,9 @@ public class Empresa implements Entidade<Long> {
 	@Column(name = "id",
 			nullable = false)
 	private Long id;
-	
+
 	@ManyToOne
-	@JoinColumn(name="part_id")
+	@JoinColumn(name = "part_id")
 	private Partida partida;
 
 	@Column(name = "nome",
@@ -70,7 +71,8 @@ public class Empresa implements Entidade<Long> {
 	private BigDecimal caixa;
 
 	@NotNull
-	@OneToMany(mappedBy = "id.empresa")
+	@OneToMany(mappedBy = "id.empresa",
+			cascade = CascadeType.ALL)
 	private List<ItemEstoque> estoque;
 
 	@NotNull
@@ -87,7 +89,7 @@ public class Empresa implements Entidade<Long> {
 	public Long getId() {
 		return id;
 	}
-	
+
 	@JsonIgnore
 	public Partida getPartida() {
 		return partida;
@@ -166,7 +168,7 @@ public class Empresa implements Entidade<Long> {
 
 		private Builder() {
 		}
-		
+
 		public Builder partida(Partida partida) {
 			this.partida = partida;
 			return this;

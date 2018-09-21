@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -23,12 +24,14 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @Entity
 @Table(name = "intencoes")
 @SequenceGenerator(name = "inte",
-		sequenceName = "inte")
+		sequenceName = "inte",
+		allocationSize = 1)
 public class Intencao implements Entidade<Long> {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(generator = "inte")
 	@Column(name = "id",
 			nullable = false)
 	@Min(1)
@@ -104,6 +107,10 @@ public class Intencao implements Entidade<Long> {
 	public StatusIntencao getStatus() {
 		return status;
 	}
+	
+	public void setStatus(StatusIntencao status) {
+		this.status = status;
+	}
 
 	public Produto getProduto() {
 		return produto;
@@ -157,7 +164,7 @@ public class Intencao implements Entidade<Long> {
 			return this;
 		}
 
-		public Builder tipo(StatusIntencao status) {
+		public Builder status(StatusIntencao status) {
 			this.status = status;
 			return this;
 		}
