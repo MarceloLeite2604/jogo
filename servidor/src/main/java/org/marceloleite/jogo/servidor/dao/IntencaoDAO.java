@@ -1,16 +1,14 @@
 package org.marceloleite.jogo.servidor.dao;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
 import org.marceloleite.jogo.servidor.dao.repository.IntencaoRepository;
 import org.marceloleite.jogo.servidor.modelo.Intencao;
+import org.marceloleite.jogo.servidor.modelo.Partida;
 import org.marceloleite.jogo.servidor.modelo.StatusIntencao;
 import org.marceloleite.jogo.servidor.modelo.TipoIntencao;
-import org.marceloleite.jogo.servidor.util.IterableUtil;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,9 +16,6 @@ public class IntencaoDAO implements BaseDAO<Intencao, Long> {
 
 	@Inject
 	private IntencaoRepository intencaoRepository;
-
-	@Inject
-	private IterableUtil iterableUtil;
 
 	@Override
 	public Intencao salvar(Intencao intencao) {
@@ -47,17 +42,12 @@ public class IntencaoDAO implements BaseDAO<Intencao, Long> {
 		return optionalIntencao.isPresent();
 	}
 
-	public List<Intencao> obterPorTipo(TipoIntencao tipo) {
-		return iterableUtil.toList(obterTodos())
-				.stream()
-				.filter(intencao -> tipo.equals(intencao.getTipo()))
-				.collect(Collectors.toList());
+	public Iterable<Intencao> obterPorPartidaTipo(Partida partida, TipoIntencao tipo) {
+		return intencaoRepository.findByEmpresaPartidaAndTipo(partida, tipo);
 	}
 
-	public List<Intencao> obterContratosAbertos(TipoIntencao tipo) {
-		return obterPorTipo(tipo).stream()
-				.filter(intencao -> StatusIntencao.ABERTO.equals(intencao.getStatus()))
-				.collect(Collectors.toList());
+	public Iterable<Intencao> obterPorPartidaTipoStatus(Partida partida, TipoIntencao tipo, StatusIntencao status) {
+		return intencaoRepository.findByEmpresaPartidaAndTipoAndStatus(partida, tipo, status);
 	}
 
 }

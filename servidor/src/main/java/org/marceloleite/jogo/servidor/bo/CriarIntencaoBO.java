@@ -51,7 +51,6 @@ public class CriarIntencaoBO {
 	public void atualizarModelo(Intencao intencao) {
 		if (intencao.getTipo() == TipoIntencao.OFERTA) {
 			empresaBO.atualizarEstoque(intencao.getEmpresa(), intencao);
-			
 		} else {
 			empresaBO.atualizarCaixa(intencao.getEmpresa(), intencao);
 		}

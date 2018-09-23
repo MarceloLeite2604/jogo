@@ -12,25 +12,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CriarContratosBO {
-	
+
 	@Inject
 	private IntencaoBO intencaoBO;
-	
+
 	@Inject
 	private ContratoBO contratoBO;
 
-	public void criar(Intencao intencao) {
-		if (intencao.getTipo() == TipoIntencao.OFERTA) {
-			criarContratosOferta(intencao);
-		} else {
-			criarContratosDemanda(intencao);
-		}
-	}
-	
-	private void criarContratosOferta(Intencao oferta) {
+	public void criar(Intencao oferta) {
 		List<Intencao> demandasCobertas = intencaoBO.obterIntencoesAbertasCobertas(oferta);
 		for (Intencao demandaCoberta : demandasCobertas) {
-			Contrato contrato = criarContrato(oferta, demandaCoberta, oferta.getTipo());
+			Contrato contrato = criarContrato(oferta, demandaCoberta);
 			contratoBO.salvar(contrato);
 			oferta.getContratosOferta()
 					.add(contrato);
@@ -38,40 +30,22 @@ public class CriarContratosBO {
 		}
 	}
 
-	private void criarContratosDemanda(Intencao demanda) {
-		List<Intencao> ofertasCobertas = intencaoBO.obterIntencoesAbertasCobertas(demanda);
-		for (Intencao ofertaCoberta : ofertasCobertas) {
-			Contrato contrato = criarContrato(ofertaCoberta, demanda, demanda.getTipo());
-			contratoBO.salvar(contrato);
-			demanda.getContratosDemanda()
-					.add(contrato);
-		}
-	}
-	
-	private Contrato criarContrato(Intencao oferta, Intencao demanda, TipoIntencao tipoGerador) {
+	private Contrato criarContrato(Intencao geradora, Intencao coberta) {
 		return Contrato.builder()
-				.oferta(oferta)
-				.demanda(demanda)
-				.precoUnitario(calcularPrecoUnitario(oferta, demanda, tipoGerador))
-				.quantidade(calcularQuantidade(oferta, demanda))
-				.itencaoGeradora(tipoGerador)
+				.oferta(geradora.getTipo() == TipoIntencao.OFERTA ? geradora : coberta)
+				.demanda(geradora.getTipo() == TipoIntencao.DEMANDA ? geradora : coberta)
+				.precoUnitario(coberta.getPrecoUnitario())
+				.quantidade(calcularQuantidade(geradora, coberta))
+				.itencaoGeradora(geradora.getTipo())
 				.build();
 	}
 
-	private BigDecimal calcularPrecoUnitario(Intencao oferta, Intencao demanda, TipoIntencao tipoGerador) {
-		if (TipoIntencao.DEMANDA.equals(tipoGerador)) {
-			return demanda.getPrecoUnitario();
+	private BigDecimal calcularQuantidade(Intencao geradora, Intencao coberta) {
+		if (geradora.getQuantidade()
+				.compareTo(coberta.getQuantidade()) > 0) {
+			return geradora.getQuantidade();
 		} else {
-			return oferta.getPrecoUnitario();
-		}
-	}
-
-	private BigDecimal calcularQuantidade(Intencao oferta, Intencao demanda) {
-		if (demanda.getQuantidade()
-				.compareTo(oferta.getQuantidade()) > 0) {
-			return demanda.getQuantidade();
-		} else {
-			return oferta.getQuantidade();
+			return coberta.getQuantidade();
 		}
 	}
 }

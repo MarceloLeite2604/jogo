@@ -103,16 +103,19 @@ public class EmpresaBO {
 		BigDecimal novaQuantidade = itemEstoque.getQuantidade()
 				.subtract(intencao.getQuantidade());
 		itemEstoque.setQuantidade(novaQuantidade);
+		empresaDAO.salvar(empresa);
 	}
 
 	public void atualizarOfertas(Empresa empresa, Intencao intencao) {
 		empresa.getOfertas()
 				.add(intencao);
+		empresaDAO.salvar(empresa);
 	}
 
 	public void atualizarCaixa(Empresa empresa, Intencao intencao) {
 		empresa.setCaixa(empresa.getCaixa()
 				.subtract(intencao.getPrecoTotalAtual()));
+		empresaDAO.salvar(empresa);
 	}
 
 	public Empresa obterOuCriar(Empresa empresa) {

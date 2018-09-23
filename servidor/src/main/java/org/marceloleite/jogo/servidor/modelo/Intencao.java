@@ -141,6 +141,12 @@ public class Intencao implements Entidade<Long> {
 		return new Builder();
 	}
 
+	@Override
+	public String toString() {
+		return "Intencao [id=" + id + ", empresa=" + empresa + ", produto=" + produto + ", tipo=" + tipo + ", status="
+				+ status + ", precoUnitario=" + precoUnitario + ", quantidade=" + quantidade + "]";
+	}
+
 	public static final class Builder {
 		private TipoIntencao tipo;
 		private StatusIntencao status;

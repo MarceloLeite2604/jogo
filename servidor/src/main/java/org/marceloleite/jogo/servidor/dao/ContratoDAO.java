@@ -1,38 +1,39 @@
 package org.marceloleite.jogo.servidor.dao;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
+import javax.inject.Inject;
+
+import org.marceloleite.jogo.servidor.dao.repository.ContratoRepository;
 import org.marceloleite.jogo.servidor.modelo.Contrato;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ContratoDAO implements BaseDAO<Contrato, Long> {
-	
-	private Map<Long, Contrato> contratos = new HashMap<>();
+
+	@Inject
+	private ContratoRepository contratoRepository;
 
 	@Override
 	public Contrato salvar(Contrato contrato) {
-		contratos.put(contrato.getId(), contrato);
-		return contrato;
+		return contratoRepository.save(contrato);
 	}
 
 	@Override
 	public Optional<Contrato> obterPorId(Long id) {
-		return Optional.ofNullable(contratos.get(id));
+		return contratoRepository.findById(id);
 	}
 
 	@Override
-	public Collection<Contrato> obterTodos() {
-		return contratos.values();
+	public Iterable<Contrato> obterTodos() {
+		return  contratoRepository.findAll();
 	}
 
 	@Override
 	public boolean excluir(Long id) {
-		return Optional.ofNullable(contratos.remove(id))
-				.isPresent();
+		Optional<Contrato> optionalContrato = obterPorId(id);
+		optionalContrato.ifPresent(contratoRepository::delete);
+		return optionalContrato.isPresent();
 	}
 
 }

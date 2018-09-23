@@ -72,6 +72,11 @@ public class Partida implements Entidade<Long> {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "Partida [id=" + id + ", instante=" + instante + "]";
+	}
+
 	public static Builder builder() {
 		return new Builder();
 	}

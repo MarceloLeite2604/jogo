@@ -3,6 +3,7 @@ package org.marceloleite.jogo.servidor.bo;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -15,6 +16,9 @@ import org.marceloleite.jogo.servidor.modelo.StatusIntencao;
 import org.marceloleite.jogo.servidor.modelo.TipoIntencao;
 import org.marceloleite.jogo.servidor.modelo.comparador.ComparadorIntencaoMaiorPreco;
 import org.marceloleite.jogo.servidor.modelo.comparador.ComparadorIntencaoMenorPreco;
+import org.marceloleite.jogo.servidor.modelo.predicado.PredicadoIntencaoMaiorPreco;
+import org.marceloleite.jogo.servidor.modelo.predicado.PredicadoIntencaoMenorPreco;
+import org.marceloleite.jogo.servidor.util.IterableUtil;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -28,6 +32,9 @@ public class IntencaoBO implements BaseBO<Intencao, Long> {
 
 	@Inject
 	private ContratoBO contratoBO;
+
+	@Inject
+	private IterableUtil iterableUtil;
 
 	@Override
 	public Intencao salvar(Intencao intencao) {
@@ -49,13 +56,8 @@ public class IntencaoBO implements BaseBO<Intencao, Long> {
 		return intencaoDAO.excluir(id);
 	}
 
-	public List<Intencao> obterPorTipo(TipoIntencao tipo) {
-		return intencaoDAO.obterPorTipo(tipo);
-	}
-
-	public List<Intencao> obterContratosAbertos(TipoIntencao tipo) {
-		return intencaoDAO.obterContratosAbertos(tipo);
-
+	public List<Intencao> obterPorTipoStatus(TipoIntencao tipo, StatusIntencao status) {
+		return iterableUtil.toList(intencaoDAO.obterPorPartidaTipoStatus(partidaBO.obter(), tipo, status));
 	}
 
 	public Object obterPorIdOuLancarExcecao(Long id) {
@@ -76,25 +78,34 @@ public class IntencaoBO implements BaseBO<Intencao, Long> {
 	}
 
 	public List<Intencao> obterIntencoesAbertasCobertas(Intencao intencao) {
-		return obterContratosAbertos(verificarTipoProcurado(intencao)).stream()
-				.filter(intencaoObtida -> intencao.getPrecoUnitario()
-						.compareTo(intencaoObtida.getPrecoUnitario()) >= 0)
-				.filter(demanda -> !intencao.getEmpresa()
-						.equals(demanda.getEmpresa()))
-				.sorted(obterComparador(intencao))
+		TipoIntencao tipoProcurado = verificarTipoProcurado(intencao);
+		List<Intencao> intencoes = obterPorTipoStatus(tipoProcurado, StatusIntencao.ABERTO);
+		return intencoes.stream()
+				.filter(obterFiltroPrecoUnitario(intencao))
+				.filter(i -> !i.getEmpresa()
+						.equals(intencao.getEmpresa()))
+				.sorted(obterComparadorPreco(intencao))
 				.collect(Collectors.toList());
 	}
 
-	private Comparator<Intencao> obterComparador(Intencao intencao) {
+	private Comparator<Intencao> obterComparadorPreco(Intencao intencao) {
 		if (intencao.getTipo() == TipoIntencao.OFERTA) {
-			return new ComparadorIntencaoMaiorPreco();
-		} else {
 			return new ComparadorIntencaoMenorPreco();
+		} else {
+			return new ComparadorIntencaoMaiorPreco();
+		}
+	}
+
+	private Predicate<Intencao> obterFiltroPrecoUnitario(Intencao intencao) {
+		if (intencao.getTipo() == TipoIntencao.OFERTA) {
+			return new PredicadoIntencaoMaiorPreco(intencao.getPrecoUnitario());
+		} else {
+			return new PredicadoIntencaoMenorPreco(intencao.getPrecoUnitario());
 		}
 	}
 
 	private TipoIntencao verificarTipoProcurado(Intencao intencao) {
-		if (TipoIntencao.OFERTA.equals(intencao.getTipo())) {
+		if (intencao.getTipo() == TipoIntencao.OFERTA) {
 			return TipoIntencao.DEMANDA;
 		} else {
 			return TipoIntencao.OFERTA;
