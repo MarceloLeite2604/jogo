@@ -16,3 +16,4 @@ DELETE FROM empresas;
 PROMPT 'Excluindo conteúdo de partidas.'
 DELETE FROM partidas;
 
+COMMIT;
