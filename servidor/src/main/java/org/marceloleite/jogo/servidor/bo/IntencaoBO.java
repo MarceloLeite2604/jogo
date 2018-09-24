@@ -10,7 +10,6 @@ import javax.inject.Inject;
 
 import org.marceloleite.jogo.servidor.dao.IntencaoDAO;
 import org.marceloleite.jogo.servidor.excecao.JogoRegraNegocioException;
-import org.marceloleite.jogo.servidor.modelo.Contrato;
 import org.marceloleite.jogo.servidor.modelo.Intencao;
 import org.marceloleite.jogo.servidor.modelo.StatusIntencao;
 import org.marceloleite.jogo.servidor.modelo.TipoIntencao;
@@ -113,15 +112,9 @@ public class IntencaoBO implements BaseBO<Intencao, Long> {
 	}
 
 	public void verificarPreenchimento(Intencao intencao) {
-		List<Contrato> contratos;
-		if (intencao.getTipo() == TipoIntencao.OFERTA) {
-			contratos = intencao.getContratosDemanda();
-		} else {
-			contratos = intencao.getContratosOferta();
-		}
 
 		if (intencao.getQuantidade()
-				.compareTo(contratoBO.calcularQuantidadeTotal(contratos)) == 0) {
+				.compareTo(contratoBO.calcularQuantidadeTotal(intencao.getContratos())) == 0) {
 			intencao.setStatus(StatusIntencao.FECHADO);
 		}
 

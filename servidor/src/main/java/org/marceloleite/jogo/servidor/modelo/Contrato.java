@@ -60,7 +60,7 @@ public class Contrato implements Entidade<Long> {
 	@Column(name = "tipo_intencao_geradora",
 			nullable = false)
 	@NotNull
-	private TipoIntencao itencaoGeradora;
+	private TipoIntencao intencaoGeradora;
 
 	@Override
 	public Long getId() {
@@ -83,8 +83,8 @@ public class Contrato implements Entidade<Long> {
 		return precoUnitario;
 	}
 
-	public TipoIntencao getItencaoGeradora() {
-		return itencaoGeradora;
+	public TipoIntencao getIntencaoGeradora() {
+		return intencaoGeradora;
 	}
 
 	private Contrato(Builder builder) {
@@ -92,7 +92,7 @@ public class Contrato implements Entidade<Long> {
 		this.demanda = builder.demanda;
 		this.quantidade = builder.quantidade;
 		this.precoUnitario = builder.precoUnitario;
-		this.itencaoGeradora = builder.itencaoGeradora;
+		this.intencaoGeradora = builder.intencaoGeradora;
 	}
 
 	public static Builder builder() {
@@ -104,7 +104,7 @@ public class Contrato implements Entidade<Long> {
 		private Intencao demanda;
 		private BigDecimal quantidade;
 		private BigDecimal precoUnitario;
-		private TipoIntencao itencaoGeradora;
+		private TipoIntencao intencaoGeradora;
 
 		private Builder() {
 		}
@@ -129,8 +129,8 @@ public class Contrato implements Entidade<Long> {
 			return this;
 		}
 
-		public Builder itencaoGeradora(TipoIntencao itencaoGeradora) {
-			this.itencaoGeradora = itencaoGeradora;
+		public Builder intencaoGeradora(TipoIntencao intencaoGeradora) {
+			this.intencaoGeradora = intencaoGeradora;
 			return this;
 		}
 

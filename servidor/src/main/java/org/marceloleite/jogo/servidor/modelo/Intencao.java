@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -34,7 +35,6 @@ public class Intencao implements Entidade<Long> {
 	@GeneratedValue(generator = "inte")
 	@Column(name = "id",
 			nullable = false)
-	@Min(1)
 	private Long id;
 
 	@NotNull
@@ -124,12 +124,23 @@ public class Intencao implements Entidade<Long> {
 		return quantidade;
 	}
 
+	@JsonIgnore
 	public List<Contrato> getContratosDemanda() {
 		return contratosDemanda;
 	}
 
+	@JsonIgnore
 	public List<Contrato> getContratosOferta() {
 		return contratosOferta;
+	}
+	
+	@Transient
+	public List<Contrato> getContratos() {
+		if ( tipo == TipoIntencao.OFERTA) {
+			return getContratosOferta();
+		} else {
+			return getContratosDemanda();
+		}
 	}
 
 	@JsonIgnore

@@ -19,15 +19,22 @@ public class CriarContratosBO {
 	@Inject
 	private ContratoBO contratoBO;
 
-	public void criar(Intencao oferta) {
-		List<Intencao> demandasCobertas = intencaoBO.obterIntencoesAbertasCobertas(oferta);
-		for (Intencao demandaCoberta : demandasCobertas) {
-			Contrato contrato = criarContrato(oferta, demandaCoberta);
-			contratoBO.salvar(contrato);
-			oferta.getContratosOferta()
+	public void criar(Intencao intencaoGerada) {
+		List<Intencao> intencoesCobertas = intencaoBO.obterIntencoesAbertasCobertas(intencaoGerada);
+		for (Intencao intencaoCoberta : intencoesCobertas) {
+			Contrato contrato = criarContrato(intencaoGerada, intencaoCoberta);
+			adicionarContrato(intencaoGerada, contrato);
+			intencaoCoberta.getContratosDemanda()
 					.add(contrato);
-			intencaoBO.verificarPreenchimento(demandaCoberta);
+			intencaoBO.verificarPreenchimento(intencaoCoberta);
+			contratoBO.salvar(contrato);
 		}
+	}
+
+	private void adicionarContrato(Intencao intencao, Contrato contrato) {
+		intencao.getContratos()
+				.add(contrato);
+		intencaoBO.verificarPreenchimento(intencao);
 	}
 
 	private Contrato criarContrato(Intencao geradora, Intencao coberta) {
@@ -36,7 +43,7 @@ public class CriarContratosBO {
 				.demanda(geradora.getTipo() == TipoIntencao.DEMANDA ? geradora : coberta)
 				.precoUnitario(coberta.getPrecoUnitario())
 				.quantidade(calcularQuantidade(geradora, coberta))
-				.itencaoGeradora(geradora.getTipo())
+				.intencaoGeradora(geradora.getTipo())
 				.build();
 	}
 
