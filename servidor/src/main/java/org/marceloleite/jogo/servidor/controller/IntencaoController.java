@@ -3,8 +3,8 @@ package org.marceloleite.jogo.servidor.controller;
 import javax.inject.Inject;
 import javax.validation.Valid;
 
-import org.marceloleite.jogo.servidor.bo.CriarIntencaoBO;
-import org.marceloleite.jogo.servidor.bo.IntencaoBO;
+import org.marceloleite.jogo.servidor.business.CriarIntencaoBO;
+import org.marceloleite.jogo.servidor.business.IntencaoBO;
 import org.marceloleite.jogo.servidor.modelo.Intencao;
 import org.marceloleite.jogo.servidor.modelo.requisicao.RequisicaoIntencao;
 import org.springframework.http.MediaType;

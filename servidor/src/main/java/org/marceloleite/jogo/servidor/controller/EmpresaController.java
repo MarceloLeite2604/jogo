@@ -3,7 +3,7 @@ package org.marceloleite.jogo.servidor.controller;
 import javax.inject.Inject;
 import javax.validation.Valid;
 
-import org.marceloleite.jogo.servidor.bo.EmpresaBO;
+import org.marceloleite.jogo.servidor.business.EmpresaBO;
 import org.marceloleite.jogo.servidor.excecao.JogoRegraNegocioException;
 import org.marceloleite.jogo.servidor.modelo.Empresa;
 import org.marceloleite.jogo.servidor.modelo.requisicao.RequisicaoEmpresa;

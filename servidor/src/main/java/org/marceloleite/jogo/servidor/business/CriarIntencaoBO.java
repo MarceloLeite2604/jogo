@@ -1,4 +1,4 @@
-package org.marceloleite.jogo.servidor.bo;
+package org.marceloleite.jogo.servidor.business;
 
 import javax.inject.Inject;
 

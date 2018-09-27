@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.marceloleite.jogo.servidor.bo.ProdutoBO;
+import org.marceloleite.jogo.servidor.business.ProdutoBO;
 import org.marceloleite.jogo.servidor.modelo.Produto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

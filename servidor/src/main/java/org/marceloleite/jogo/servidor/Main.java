@@ -2,7 +2,7 @@ package org.marceloleite.jogo.servidor;
 
 import javax.inject.Inject;
 
-import org.marceloleite.jogo.servidor.bo.JogoBO;
+import org.marceloleite.jogo.servidor.business.JogoBO;
 import org.marceloleite.jogo.servidor.configuracao.JogoFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import javax.inject.Inject;
 
-import org.marceloleite.jogo.servidor.bo.ItemEstoqueBO;
+import org.marceloleite.jogo.servidor.business.ItemEstoqueBO;
 import org.marceloleite.jogo.servidor.excecao.JogoRegraNegocioException;
 import org.marceloleite.jogo.servidor.modelo.Intencao;
 import org.marceloleite.jogo.servidor.modelo.ItemEstoque;
