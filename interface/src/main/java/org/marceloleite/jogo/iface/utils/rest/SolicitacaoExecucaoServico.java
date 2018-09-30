@@ -1,4 +1,4 @@
-package org.marceloleite.jogo.iface.util.rest;
+package org.marceloleite.jogo.iface.utils.rest;
 
 
 import java.util.Arrays;

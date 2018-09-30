@@ -1,14 +1,19 @@
-package org.marceloleite.jogo.iface.util.rest;
+package org.marceloleite.jogo.iface.utils.rest;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.inject.Inject;
+
 import org.apache.http.client.utils.URIBuilder;
 import org.marceloleite.jogo.iface.excecao.JogoRegraNegocioException;
 import org.marceloleite.jogo.iface.excecao.JogoSistemaException;
+import org.marceloleite.jogo.iface.modelo.erroweb.ErroServicoWeb;
+import org.marceloleite.jogo.iface.utils.ErroServicoWebUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,14 +22,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Component
 public class ExecutorServicoRest {
 
+	@Inject
 	private RestTemplate restTemplate;
 
-	public ExecutorServicoRest() {
-		this.restTemplate = new RestTemplate();
-	}
+	@Inject
+	private ObjectMapper objectMapper;
 
 	public <E, S> S executarServico(SolicitacaoExecucaoServico<E, S> solicitacao) {
 		URI uri = criarUri(solicitacao);
@@ -36,13 +43,32 @@ public class ExecutorServicoRest {
 			return restTemplate
 					.exchange(uri, solicitacao.getHttpMethod(), httpEntity, solicitacao.getTipoObjetoReceber())
 					.getBody();
-		} catch (RestClientResponseException excecao) {
-			if (excecao.getRawStatusCode() == HttpStatus.UNPROCESSABLE_ENTITY.value()) {
-				throw new JogoRegraNegocioException(excecao.getResponseBodyAsString());
+		} catch (RestClientResponseException excecaoRestClientResponse) {
+			if (excecaoRestClientResponse.getRawStatusCode() == HttpStatus.BAD_REQUEST.value()) {
+				throw new JogoSistemaException(elaborarMensagemErro400(uri, excecaoRestClientResponse));
+			} else if (excecaoRestClientResponse.getRawStatusCode() == HttpStatus.UNPROCESSABLE_ENTITY.value()) {
+				throw new JogoRegraNegocioException(excecaoRestClientResponse.getResponseBodyAsString());
 			} else {
-				throw new JogoSistemaException("Erro ao executar o serviço localizado no endereço \"" + uri + "\".",
-						excecao);
+				throw new JogoSistemaException(escreverCabecalhoMensagemErro(uri), excecaoRestClientResponse);
 			}
+		}
+	}
+
+	private String escreverCabecalhoMensagemErro(URI uri) {
+		return "Erro ao executar o serviço localizado no endereço \"" + uri + "\".";
+	}
+
+	private String elaborarMensagemErro400(URI uri, RestClientResponseException excecaoRestClientResponse) {
+		try {
+			ErroServicoWeb erroServicoWeb = objectMapper.readValue(excecaoRestClientResponse.getResponseBodyAsString(),
+					ErroServicoWeb.class);
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append(escreverCabecalhoMensagemErro(uri) + "\n");
+			stringBuilder.append(ErroServicoWebUtils.formatarMensagem(erroServicoWeb));
+			return stringBuilder.toString();
+		} catch (IOException exception) {
+			return escreverCabecalhoMensagemErro(uri) + "\nMensagem retornada: "
+					+ excecaoRestClientResponse.getResponseBodyAsString();
 		}
 	}
 
@@ -52,8 +78,8 @@ public class ExecutorServicoRest {
 		try {
 			hostUri = new URI(solicitacao.getHost());
 		} catch (URISyntaxException excecao) {
-			throw new JogoSistemaException(
-					"Não foi possível compreender o endereço \"" + solicitacao.getHost() + "\".", excecao);
+			throw new JogoSistemaException("Não foi possível compreender o endereço \"" + solicitacao.getHost() + "\".",
+					excecao);
 		}
 
 		URIBuilder uriBuilder = new URIBuilder(hostUri);

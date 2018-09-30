@@ -16,7 +16,9 @@
 					id="outputNomeEmpresa" 
 					for="inputNomeEmpresa" 
 					value="Nome da empresa:" />
-				<p:inputText id="inputNomeEmpresa" />
+				<p:inputText
+					id="inputNomeEmpresa"
+					value="#{perguntaEmpresaBean.nomeEmpresa}" />
 				<p:commandButton 
 				value="Criar"
 				action="#{perguntaEmpresaBean.aoPressionarBotaoCriar()}" />
