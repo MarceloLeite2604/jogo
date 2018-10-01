@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 import javax.inject.Inject;
 
+import org.marceloleite.jogo.iface.Pagina;
 import org.marceloleite.jogo.iface.business.EmpresaBO;
 import org.marceloleite.jogo.iface.excecao.JogoRegraNegocioException;
-import org.marceloleite.jogo.iface.modelo.Empresa;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -22,6 +22,9 @@ public class PerguntaEmpresaBean implements Serializable {
 	@Inject
 	private EmpresaBO empresaBO;
 
+	@Inject
+	private EmpresaBean empresaBean;
+
 	public String getNomeEmpresa() {
 		return nomeEmpresa;
 	}
@@ -30,10 +33,11 @@ public class PerguntaEmpresaBean implements Serializable {
 		this.nomeEmpresa = nomeEmpresa;
 	}
 
-	public void aoPressionarBotaoCriar() {
+	public String aoPressionarBotaoCriar() {
 		if (StringUtils.isEmpty(nomeEmpresa)) {
 			throw new JogoRegraNegocioException("O nome da empresa não pode ser nulo.");
 		}
-		Empresa empresa = empresaBO.criar(nomeEmpresa);
+		empresaBean.setEmpresa(empresaBO.criar(nomeEmpresa));
+		return Pagina.redirecionarPara(Pagina.EMPRESA);
 	}
 }

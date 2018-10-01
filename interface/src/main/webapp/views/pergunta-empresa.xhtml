@@ -2,27 +2,27 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui" 
-	template="/WEB-INF/template.xhtml">
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
 	
+	 <ui:param name="titulo" value="Mico" />
+
 	<ui:define name="body">
 		<ui:param name="titulo" value="Empresa" />
-	
+
 		<h:form>
-			<p:panel 
-				id="main"
-				styleClass="align-center">
-				<p:outputLabel 
-					id="outputNomeEmpresa" 
-					for="inputNomeEmpresa" 
+			<h:panelGrid columns="3" cellpadding="5">
+				<p:outputLabel id="outputNomeEmpresa" for="inputNomeEmpresa"
 					value="Nome da empresa:" />
-				<p:inputText
-					id="inputNomeEmpresa"
+				<p:inputText id="inputNomeEmpresa" required="true"
+					requiredMessage="O nome da empresa é obrigatório."
 					value="#{perguntaEmpresaBean.nomeEmpresa}" />
-				<p:commandButton 
-				value="Criar"
-				action="#{perguntaEmpresaBean.aoPressionarBotaoCriar()}" />
-			</p:panel>
+				<p:message id="messageNomeEmpresa" for="inputNomeEmpresa"
+					display="text" style="width: 280px;" />
+
+			</h:panelGrid>
+			<p:commandButton value="Criar"
+				action="#{perguntaEmpresaBean.aoPressionarBotaoCriar()}"
+				update="@form" />
 		</h:form>
 	</ui:define>
 </ui:composition>

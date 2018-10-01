@@ -47,7 +47,7 @@ public class ExecutorServicoRest {
 			if (excecaoRestClientResponse.getRawStatusCode() == HttpStatus.BAD_REQUEST.value()) {
 				throw new JogoSistemaException(elaborarMensagemErro400(uri, excecaoRestClientResponse));
 			} else if (excecaoRestClientResponse.getRawStatusCode() == HttpStatus.UNPROCESSABLE_ENTITY.value()) {
-				throw new JogoRegraNegocioException(excecaoRestClientResponse.getResponseBodyAsString());
+				throw new JogoRegraNegocioException(elaborarMensagemErro422(uri, excecaoRestClientResponse));
 			} else {
 				throw new JogoSistemaException(escreverCabecalhoMensagemErro(uri), excecaoRestClientResponse);
 			}
@@ -66,6 +66,17 @@ public class ExecutorServicoRest {
 			stringBuilder.append(escreverCabecalhoMensagemErro(uri) + "\n");
 			stringBuilder.append(ErroServicoWebUtils.formatarMensagem(erroServicoWeb));
 			return stringBuilder.toString();
+		} catch (IOException exception) {
+			return escreverCabecalhoMensagemErro(uri) + "\nMensagem retornada: "
+					+ excecaoRestClientResponse.getResponseBodyAsString();
+		}
+	}
+
+	private String elaborarMensagemErro422(URI uri, RestClientResponseException excecaoRestClientResponse) {
+		try {
+			ErroServicoWeb erroServicoWeb = objectMapper.readValue(excecaoRestClientResponse.getResponseBodyAsString(),
+					ErroServicoWeb.class);
+			return erroServicoWeb.getMessage();
 		} catch (IOException exception) {
 			return escreverCabecalhoMensagemErro(uri) + "\nMensagem retornada: "
 					+ excecaoRestClientResponse.getResponseBodyAsString();

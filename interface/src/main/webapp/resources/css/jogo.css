@@ -1,3 +1,14 @@
 .align-center {
 	text-align: center;
+	margin: 0px auto;
+}
+
+.align-left {
+	text-align: left;
+	margin: 0px 0px 0px auto; 
+}
+
+.align-right {
+	text-align: right;
+	margin: 0px auto 0px 0px; 
 }

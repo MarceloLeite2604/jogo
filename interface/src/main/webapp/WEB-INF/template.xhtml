@@ -10,9 +10,7 @@
 
     <ui:include src="/WEB-INF/meta.xhtml" />
     
-    <title>
-    	<ui:insert name="title">Jogo</ui:insert>
-   	</title>
+    <title>#{empty titulo ? 'Jogo' : titulo}</title>
     
     <ui:insert name="head" />
 </h:head>
@@ -21,7 +19,7 @@
 	<p:messages 
 		id="messagesGerais" 
 		showDetail="true"
-		globalOnly="false" 
+		globalOnly="true" 
 		closable="true">
         <p:autoUpdate />
     </p:messages>

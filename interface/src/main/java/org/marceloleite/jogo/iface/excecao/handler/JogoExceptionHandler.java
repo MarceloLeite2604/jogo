@@ -58,7 +58,7 @@ public class JogoExceptionHandler extends ExceptionHandlerWrapper {
 
 			if (throwable != null) {
 				FacesContext facesContext = FacesContext.getCurrentInstance();
-				facesContext.addMessage(ID_MESSAGES_ERRO, elaborarFacesMessage(throwable));
+				facesContext.addMessage(null, elaborarFacesMessage(throwable));
 				iterador.remove();
 			}
 		}
