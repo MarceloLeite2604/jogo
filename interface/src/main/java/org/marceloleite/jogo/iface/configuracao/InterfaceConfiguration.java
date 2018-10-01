@@ -5,7 +5,6 @@ import java.util.ResourceBundle;
 
 import javax.inject.Named;
 
-import org.marceloleite.jogo.iface.excecao.handler.JogoExceptionHandlerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;

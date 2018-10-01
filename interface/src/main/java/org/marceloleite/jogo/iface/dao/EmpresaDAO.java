@@ -2,7 +2,6 @@ package org.marceloleite.jogo.iface.dao;
 
 import javax.inject.Inject;
 
-import org.apache.http.message.BasicNameValuePair;
 import org.marceloleite.jogo.iface.configuracao.propriedades.JogoProperties;
 import org.marceloleite.jogo.iface.modelo.Empresa;
 import org.marceloleite.jogo.iface.modelo.requisicao.RequisicaoEmpresa;
