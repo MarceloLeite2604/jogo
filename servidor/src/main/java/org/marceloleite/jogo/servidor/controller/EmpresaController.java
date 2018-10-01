@@ -4,7 +4,6 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 
 import org.marceloleite.jogo.servidor.business.EmpresaBO;
-import org.marceloleite.jogo.servidor.excecao.JogoRegraNegocioException;
 import org.marceloleite.jogo.servidor.modelo.Empresa;
 import org.marceloleite.jogo.servidor.modelo.requisicao.RequisicaoEmpresa;
 import org.springframework.http.MediaType;
@@ -38,8 +37,8 @@ public class EmpresaController {
 		return "Empresa de código " + id + " excluída.";
 	}
 
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public Empresa post(@Valid @RequestBody RequisicaoEmpresa requisicaoEmpresa) {
 		return empresaBO.criar(requisicaoEmpresa);
 	}
