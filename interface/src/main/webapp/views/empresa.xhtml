@@ -8,5 +8,14 @@
 
 	<ui:define name="body">
 
+		<h1>${empresaBean.empresa.nome}</h1>
+
+		<h:panelGrid columns="3" cellpadding="5">
+			<h:outputText
+				value="Caixa: ${formatadorBean.formatarValorFinanceiro(empresaBean.empresa.caixa)}" />
+		</h:panelGrid>
+		
+		<ui:include src="/views/panels/panel-estoque.xhtml" />
+		
 	</ui:define>
 </ui:composition>

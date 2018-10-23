@@ -126,6 +126,13 @@
 			<version>4.2</version>
 		</dependency>
 
+		<!-- EHCache -->
+		<dependency>
+			<groupId>org.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>3.6.1</version>
+		</dependency>
+
 		<!-- Personal -->
 		<dependency>
 			<groupId>org.marceloleite.libraries</groupId>

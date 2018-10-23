@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dataTable id="dataGridOfertas"
+		value="#{empresaBean.ofertas}" var="oferta"
+		emptyMessage="Nenhuma oferta.">
+		<f:facet name="header">Ofertas</f:facet>
+		
+		<p:column headerText="Produto">
+			<h:outputText value="#{oferta.produto.nome}" />
+		</p:column>
+		
+		<p:column headerText="Preço unitário">
+			<h:outputText value="#{oferta.precoUnitario}" />
+		</p:column>
+		
+		<p:column headerText="Quantidade">
+			<h:outputText value="#{oferta.quantidade}" />
+		</p:column>
+	</p:dataTable>
+	
+	<p:poll interval="2" listener="#{empresaBean.atualizarIntencoes}" update="dataGridOfertas" />
+</ui:composition>

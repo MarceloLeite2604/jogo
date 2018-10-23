@@ -17,10 +17,10 @@ import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import org.marceloleite.jogo.servidor.serializer.IdCampoSerializer;
-
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "intencoes")
@@ -40,7 +40,8 @@ public class Intencao implements Entidade<Long> {
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name="empr_id")
-	@JsonSerialize(using = IdCampoSerializer.class)
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+	@JsonIdentityReference(alwaysAsId = true)
 	private Empresa empresa;
 
 	@Column(name = "tipo",
@@ -56,7 +57,8 @@ public class Intencao implements Entidade<Long> {
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name="prod_id")
-	@JsonSerialize(using = IdCampoSerializer.class)
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+	@JsonIdentityReference(alwaysAsId = true)
 	private Produto produto;
 
 	@Column(name = "preco_unitario",

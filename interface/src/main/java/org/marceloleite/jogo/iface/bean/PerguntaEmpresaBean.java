@@ -38,6 +38,7 @@ public class PerguntaEmpresaBean implements Serializable {
 			throw new JogoRegraNegocioException("O nome da empresa não pode ser nulo.");
 		}
 		empresaBean.setEmpresa(empresaBO.criar(nomeEmpresa));
+		empresaBean.atualizarIntencoes();
 		return Pagina.redirecionarPara(Pagina.EMPRESA);
 	}
 }

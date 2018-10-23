@@ -1,9 +1,12 @@
 package org.marceloleite.jogo.iface.dao;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.marceloleite.jogo.iface.configuracao.propriedades.JogoProperties;
 import org.marceloleite.jogo.iface.modelo.Empresa;
+import org.marceloleite.jogo.iface.modelo.Produto;
 import org.marceloleite.jogo.iface.modelo.requisicao.RequisicaoEmpresa;
 import org.marceloleite.jogo.iface.utils.rest.ExecutorServicoRest;
 import org.marceloleite.jogo.iface.utils.rest.SolicitacaoExecucaoServico;
@@ -16,10 +19,6 @@ import org.springframework.stereotype.Component;
 public class EmpresaDAO {
 
 	private static final String CAMINHO_SERVICO = "/empresa";
-
-	private static final String PARAMETRO_NOME = "nome";
-
-	private static final String PARAMETRO_ID = "id";
 
 	@Inject
 	private JogoProperties jogoProperties;
@@ -49,5 +48,20 @@ public class EmpresaDAO {
 		return RequisicaoEmpresa.builder()
 				.nome(nome)
 				.build();
+	}
+	
+	public List<Empresa> obterTodos() {
+		SolicitacaoExecucaoServico<Void, List<Empresa>> solicitacaoExecucaoServico = SolicitacaoExecucaoServico
+				.builder(new ParameterizedTypeReference<Void>() {
+				}, new ParameterizedTypeReference<List<Empresa>>() {
+				})
+				.host(jogoProperties.getEnderecoServidor())
+				.caminhoServico(CAMINHO_SERVICO)
+				.httpMethod(HttpMethod.GET)
+				.mediaTypeEnviar(MediaType.APPLICATION_JSON)
+				.mediaTypesAceitos(MediaType.APPLICATION_JSON)
+				.build();
+		
+		return executorServicoRest.executarServico(solicitacaoExecucaoServico);
 	}
 }

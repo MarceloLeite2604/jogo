@@ -6,7 +6,11 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
+import org.marceloleite.jogo.iface.modelo.deserializer.EmpresaPorIdDeserializer;
+import org.marceloleite.jogo.iface.modelo.deserializer.ProdutoPorIdDeserializer;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 public class Intencao implements Serializable {
 
@@ -14,12 +18,14 @@ public class Intencao implements Serializable {
 
 	private Long id;
 
+	@JsonDeserialize(using = EmpresaPorIdDeserializer.class)
 	private Empresa empresa;
 
 	private TipoIntencao tipo;
 
 	private StatusIntencao status;
 
+	@JsonDeserialize(using = ProdutoPorIdDeserializer.class)
 	private Produto produto;
 
 	private BigDecimal precoUnitario;
@@ -60,7 +66,7 @@ public class Intencao implements Serializable {
 	public StatusIntencao getStatus() {
 		return status;
 	}
-	
+
 	public void setStatus(StatusIntencao status) {
 		this.status = status;
 	}
@@ -86,10 +92,10 @@ public class Intencao implements Serializable {
 	public List<Contrato> getContratosOferta() {
 		return contratosOferta;
 	}
-	
+
 	@Transient
 	public List<Contrato> getContratos() {
-		if ( tipo == TipoIntencao.OFERTA) {
+		if (tipo == TipoIntencao.OFERTA) {
 			return getContratosOferta();
 		} else {
 			return getContratosDemanda();
