@@ -32,6 +32,7 @@ public class Produto implements Serializable {
 	}
 
 	private Produto(Builder builder) {
+		this.id = builder.id;
 		this.partida = builder.partida;
 		this.nome = builder.nome;
 	}
@@ -68,10 +69,16 @@ public class Produto implements Serializable {
 	}
 
 	public static final class Builder {
+		private Long id;
 		private Partida partida;
 		private String nome;
 
 		private Builder() {
+		}
+		
+		public Builder id(Long id) {
+			this.id = id;
+			return this;
 		}
 
 		public Builder partida(Partida partida) {

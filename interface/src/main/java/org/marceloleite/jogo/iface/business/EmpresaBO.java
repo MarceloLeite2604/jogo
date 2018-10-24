@@ -1,6 +1,5 @@
 package org.marceloleite.jogo.iface.business;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,14 +8,11 @@ import javax.inject.Inject;
 import org.ehcache.Cache;
 import org.marceloleite.jogo.iface.dao.EmpresaDAO;
 import org.marceloleite.jogo.iface.modelo.Empresa;
-import org.marceloleite.jogo.iface.utils.CacheUtils;
+import org.marceloleite.jogo.iface.modelo.FormaBusca;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
 @Component
-public class EmpresaBO implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class EmpresaBO {
 
 	@Inject
 	private EmpresaDAO empresaDAO;
@@ -25,30 +21,40 @@ public class EmpresaBO implements Serializable {
 	private Cache<Long, Empresa> cacheEmpresa;
 
 	public Empresa obter(long id) {
-		return Optional.ofNullable(obterDaLista(obterTodos(), id))
-				.orElse(obterDaLista(obterTodosDoServidor(), id));
+		return obter(id, FormaBusca.COMPLETA);
 	}
 
-	private Empresa obterDaLista(List<Empresa> empresas, long id) {
-		return empresas.stream()
-				.filter(empresa -> empresa.getId() == id)
-				.findFirst()
-				.orElse(null);
+	public Empresa obter(long id, FormaBusca formaBusca) {
+		Optional<Empresa> optionalEmpresa = Optional.ofNullable(obterDaCache(id));
+		if (!optionalEmpresa.isPresent() && FormaBusca.COMPLETA.equals(formaBusca)) {
+			optionalEmpresa = Optional.ofNullable(obterDoServidor(id));
+		}
+		return optionalEmpresa.orElse(null);
 	}
 
 	public List<Empresa> obterTodos() {
-		List<Empresa> produtos = CacheUtils.obterTodos(cacheEmpresa);
-		if (CollectionUtils.isEmpty(produtos)) {
-			produtos = obterTodosDoServidor();
-		}
-		return produtos;
+		return obterDoServidor();
 	}
 
-	private List<Empresa> obterTodosDoServidor() {
-		List<Empresa> produtos;
-		produtos = empresaDAO.obterTodos();
-		inserirNaCache(produtos);
-		return produtos;
+	private Empresa obterDaCache(long id) {
+		Empresa empresa = null;
+		if (cacheEmpresa.containsKey(id)) {
+			empresa = cacheEmpresa.get(id);
+		}
+		return empresa;
+	}
+
+	private List<Empresa> obterDoServidor() {
+		List<Empresa> empresa = empresaDAO.obterTodos();
+		inserirNaCache(empresa);
+		return empresa;
+	}
+
+	private Empresa obterDoServidor(long id) {
+		return obterDoServidor().stream()
+				.filter(empresa -> empresa.getId() == id)
+				.findFirst()
+				.orElse(null);
 	}
 
 	private void inserirNaCache(List<Empresa> empresas) {

@@ -16,6 +16,7 @@ public class Empresa implements Serializable {
 	}
 
 	private Empresa(Builder builder) {
+		this.id = builder.id;
 		this.partida = builder.partida;
 		this.nome = builder.nome;
 		this.tipo = builder.tipo;
@@ -113,6 +114,7 @@ public class Empresa implements Serializable {
 	}
 
 	public static final class Builder {
+		private Long id;
 		private Partida partida;
 		private String nome;
 		private TipoEmpresa tipo;
@@ -122,6 +124,11 @@ public class Empresa implements Serializable {
 		private List<Intencao> demandas = Collections.emptyList();
 
 		private Builder() {
+		}
+		
+		public Builder id(Long id) {
+			this.id = id;
+			return this;
 		}
 
 		public Builder partida(Partida partida) {
