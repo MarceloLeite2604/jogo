@@ -6,7 +6,6 @@ import javax.inject.Inject;
 
 import org.marceloleite.jogo.iface.configuracao.propriedades.JogoProperties;
 import org.marceloleite.jogo.iface.modelo.Empresa;
-import org.marceloleite.jogo.iface.modelo.Produto;
 import org.marceloleite.jogo.iface.modelo.requisicao.RequisicaoEmpresa;
 import org.marceloleite.jogo.iface.utils.rest.ExecutorServicoRest;
 import org.marceloleite.jogo.iface.utils.rest.SolicitacaoExecucaoServico;

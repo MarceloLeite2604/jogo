@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.ehcache.Cache;
 import org.marceloleite.jogo.iface.business.IntencaoBO;
 import org.marceloleite.jogo.iface.modelo.Empresa;
 import org.marceloleite.jogo.iface.modelo.Intencao;

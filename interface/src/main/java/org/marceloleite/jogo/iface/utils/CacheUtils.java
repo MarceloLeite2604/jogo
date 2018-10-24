@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.ehcache.Cache;
-import org.marceloleite.jogo.iface.modelo.Produto;
 
 public final class CacheUtils {
 
