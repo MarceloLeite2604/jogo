@@ -6,7 +6,6 @@ import javax.inject.Inject;
 
 import org.marceloleite.jogo.servidor.dao.ProdutoDAO;
 import org.marceloleite.jogo.servidor.excecao.JogoRegraNegocioException;
-import org.marceloleite.jogo.servidor.modelo.Empresa;
 import org.marceloleite.jogo.servidor.modelo.Produto;
 import org.springframework.stereotype.Component;
 
