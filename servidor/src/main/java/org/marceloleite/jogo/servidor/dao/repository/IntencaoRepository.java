@@ -7,6 +7,8 @@ import org.marceloleite.jogo.servidor.modelo.TipoIntencao;
 import org.springframework.data.repository.CrudRepository;
 
 public interface IntencaoRepository extends CrudRepository<Intencao, Long> {
+	
+	public Iterable<Intencao> findByEmpresaPartida(Partida partida);
 
 	public Iterable<Intencao> findByEmpresaPartidaAndTipo(Partida partida, TipoIntencao tipo);
 	

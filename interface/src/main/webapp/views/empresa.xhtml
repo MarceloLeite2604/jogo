@@ -14,8 +14,16 @@
 			<h:outputText
 				value="Caixa: ${formatadorBean.formatarValorFinanceiro(empresaBean.empresa.caixa)}" />
 		</h:panelGrid>
-		
+
 		<ui:include src="/views/panels/panel-estoque.xhtml" />
-		
+
+		<div class="ui-g">
+			<div class="ui-g-6">
+				<ui:include src="/views/panels/panel-ofertas.xhtml" />
+			</div>
+			<div class="ui-g-6">
+			</div>
+		</div>
+
 	</ui:define>
 </ui:composition>

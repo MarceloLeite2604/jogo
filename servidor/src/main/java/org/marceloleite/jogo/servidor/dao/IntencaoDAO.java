@@ -12,27 +12,23 @@ import org.marceloleite.jogo.servidor.modelo.TipoIntencao;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IntencaoDAO implements BaseDAO<Intencao, Long> {
+public class IntencaoDAO {
 
 	@Inject
 	private IntencaoRepository intencaoRepository;
 
-	@Override
 	public Intencao salvar(Intencao intencao) {
 		return intencaoRepository.save(intencao);
 	}
 
-	@Override
 	public Optional<Intencao> obterPorId(Long id) {
 		return intencaoRepository.findById(id);
 	}
 
-	@Override
-	public Iterable<Intencao> obterTodos() {
-		return intencaoRepository.findAll();
+	public Iterable<Intencao> obterPorPartida(Partida partida) {
+		return intencaoRepository.findByEmpresaPartida(partida);
 	}
 
-	@Override
 	public boolean excluir(Long id) {
 		Optional<Intencao> optionalIntencao = obterPorId(id);
 

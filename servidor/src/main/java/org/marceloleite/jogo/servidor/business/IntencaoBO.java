@@ -21,7 +21,7 @@ import org.marceloleite.jogo.servidor.util.IterableUtil;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IntencaoBO implements BaseBO<Intencao, Long> {
+public class IntencaoBO {
 
 	@Inject
 	private IntencaoDAO intencaoDAO;
@@ -35,22 +35,18 @@ public class IntencaoBO implements BaseBO<Intencao, Long> {
 	@Inject
 	private IterableUtil iterableUtil;
 
-	@Override
 	public Intencao salvar(Intencao intencao) {
 		return intencaoDAO.salvar(intencao);
 	}
 
-	@Override
 	public Optional<Intencao> obterPorId(Long id) {
 		return intencaoDAO.obterPorId(id);
 	}
 
-	@Override
-	public Iterable<Intencao> obterTodos() {
-		return intencaoDAO.obterTodos();
+	public Iterable<Intencao> obterPorPartida() {
+		return intencaoDAO.obterPorPartida(partidaBO.obter());
 	}
 
-	@Override
 	public boolean excluir(Long id) {
 		return intencaoDAO.excluir(id);
 	}

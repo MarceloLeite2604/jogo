@@ -31,7 +31,7 @@ public class IntencaoController {
 			return intencaoBO.obterPorIdOuLancarExcecao(id);
 		}
 		
-		return intencaoBO.obterTodos();
+		return intencaoBO.obterPorPartida();
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
