@@ -4,21 +4,21 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 	
-	<p:dataTable id="dataGridOfertas"
-		value="#{empresaBean.ofertas}" var="oferta"
-		emptyMessage="Nenhuma oferta.">
-		<f:facet name="header">Ofertas</f:facet>
-		
+	<p:dataTable id="dataGridDemandas"
+		value="#{empresaBean.demandas}" var="demanda"
+		emptyMessage="Nenhuma demanda.">
+		<f:facet name="header">Demandas</f:facet>
+			
 		<p:column headerText="Produto">
-			<h:outputText value="#{oferta.produto.nome}" />
+			<h:outputText value="#{demanda.produto.nome}" />
 		</p:column>
 		
 		<p:column headerText="Preço unitário">
-			<h:outputText value="#{oferta.precoUnitario}" />
+			<h:outputText value="#{demanda.precoUnitario}" />
 		</p:column>
 		
 		<p:column headerText="Quantidade">
-			<h:outputText value="#{oferta.quantidade}" />
+			<h:outputText value="#{demanda.quantidade}" />
 		</p:column>
 	</p:dataTable>
 </ui:composition>

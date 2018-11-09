@@ -9,21 +9,46 @@
 	<ui:define name="body">
 
 		<h1>${empresaBean.empresa.nome}</h1>
-
-		<h:panelGrid columns="3" cellpadding="5">
-			<h:outputText
-				value="Caixa: ${formatadorBean.formatarValorFinanceiro(empresaBean.empresa.caixa)}" />
-		</h:panelGrid>
-
-		<ui:include src="/views/panels/panel-estoque.xhtml" />
-
+	
 		<div class="ui-g">
-			<div class="ui-g-6">
-				<ui:include src="/views/panels/panel-ofertas.xhtml" />
+			<div class="ui-g-12">
+				<h:outputText value="Caixa: ${formatadorBean.formatarValorFinanceiro(empresaBean.empresa.caixa)}" />
 			</div>
-			<div class="ui-g-6">
+			<div class="ui-g-12">
+				<ui:include src="/views/panels/panel-estoque.xhtml" />
+			</div>
+			<div class="ui-g-12 ui-g-nopad">
+				<h:form>
+					<div class="ui-g-6 ui-g-nopad">
+						<div class="ui-g-12 align-center">
+							<p:commandButton 
+								value="Criar Oferta"
+								onclick="PF('dialogIntencao').show();"
+								action="#{empresaBean.aoPressionarBotaoCriarOferta()}" />
+						</div>
+						<div class="ui-g-12">
+							<ui:include src="/views/panels/panel-ofertas.xhtml" />
+						</div>
+					</div>	
+					<div class="ui-g-6 ui-g-nopad">
+						<div class="ui-g-12 align-center">
+							<p:commandButton 
+								value="Criar Demanda"
+								onclick="PF('dialogIntencao').show();"
+								action="#{empresaBean.aoPressionarBotaoCriarDemanda()}" />
+						</div>
+						<div class="ui-g-12">
+							<ui:include src="/views/panels/panel-demandas.xhtml" />
+						</div>
+					</div>
+					<p:poll 
+						interval="10" 
+						listener="#{empresaBean.atualizarIntencoes}" 
+						update="dataGridOfertas dataGridDemandas" />
+				</h:form>
 			</div>
 		</div>
-
+		
+		<ui:include src="/views/dialogs/dialog-intencao.xhtml" />
 	</ui:define>
 </ui:composition>
