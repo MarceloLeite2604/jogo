@@ -10,18 +10,31 @@
 		header="Criar ${not empty intencaoBean.tipoIntencao ? intencaoBean.tipoIntencao.name().toLowerCase() : 'intenção' }" 
 		modal="true">
 		<h:form id="formIntencao">
-			<p:outputLabel id="outputProduto" for="selectOneProduto"
-					value="Produto:" />
-	    	<h:selectOneMenu 
-	    		id="selectOneProduto" 
-	    		value="#{intencaoBean.produto}" 
-	    		required="true" 
-	    		label="Produto">
-	   			<f:selectItems 
-	   				value="#{intencaoBean.obterProdutos()}" 
-	   				var="produto" 
-	   				itemLabel="#{produto.nome}" />
-			</h:selectOneMenu>
+			<div class="ui-g">
+				<div class="ui-g-6">
+					<p:outputLabel 
+						id="outputProduto" 
+						for="selectOneProduto"
+						value="Produto:" />
+				</div>
+				<div class="ui-g-6">
+			    	<h:selectOneMenu 
+			    		id="selectOneProduto" 
+			    		value="#{intencaoBean.produto}" 
+			    		required="true" 
+			    		label="Produto">
+			   			<f:selectItems 
+			   				value="#{intencaoBean.obterProdutos()}" 
+			   				var="produto" 
+			   				itemLabel="#{produto.nome}" />
+					</h:selectOneMenu>
+				</div>
+				<p:inputNumber 
+		   					id="inputQuantidade" 
+		   					value="#{intencaoBean.preco}" 
+		   					minValue="0.01" 
+		   					maxValue="#{intencaoBean.empresa.caixa}" />
+			</div>
 		</h:form>
 	</p:dialog>
 </ui:composition>

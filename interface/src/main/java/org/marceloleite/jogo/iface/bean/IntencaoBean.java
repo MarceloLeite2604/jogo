@@ -1,5 +1,6 @@
 package org.marceloleite.jogo.iface.bean;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +25,10 @@ public class IntencaoBean {
 	private TipoIntencao tipoIntencao;
 
 	private Produto produto;
+	
+	private BigDecimal preco;
+	
+	private BigDecimal quantidade;
 
 	public Empresa getEmpresa() {
 		return empresa;
@@ -47,6 +52,22 @@ public class IntencaoBean {
 
 	public void setProduto(Produto produto) {
 		this.produto = produto;
+	}
+
+	public BigDecimal getPreco() {
+		return preco;
+	}
+
+	public void setPreco(BigDecimal preco) {
+		this.preco = preco;
+	}
+
+	public BigDecimal getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(BigDecimal quantidade) {
+		this.quantidade = quantidade;
 	}
 
 	public List<Produto> obterProdutos() {

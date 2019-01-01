@@ -23,7 +23,9 @@
 						<div class="ui-g-12 align-center">
 							<p:commandButton 
 								value="Criar Oferta"
-								onclick="PF('dialogIntencao').show();"
+								oncomplete="PF('dialogIntencao').show();"
+								update="dialogIntencao"
+								ajax="true"
 								action="#{empresaBean.aoPressionarBotaoCriarOferta()}" />
 						</div>
 						<div class="ui-g-12">
@@ -34,7 +36,9 @@
 						<div class="ui-g-12 align-center">
 							<p:commandButton 
 								value="Criar Demanda"
-								onclick="PF('dialogIntencao').show();"
+								oncomplete="PF('dialogIntencao').show();"
+								update="dialogIntencao"
+								ajax="true"
 								action="#{empresaBean.aoPressionarBotaoCriarDemanda()}" />
 						</div>
 						<div class="ui-g-12">
